@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Speculation Rules API — Demo</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════════════
+     NAVIGATION
+═══════════════════════════════════════════════════════ -->
+<nav class="nav">
+  <a href="index.html" class="nav-logo">
+    <div class="logo-icon" style="font-size:0.75rem;font-weight:800;color:white;letter-spacing:-0.03em;">SR</div>
+    SpecDemo
+  </a>
+
+  <ul class="nav-links">
+    <li>
+      <a href="index.html" class="active">Home</a>
+    </li>
+    <li>
+      <a href="page-a.html">
+        Products
+        <span class="prefetch-badge"></span>
+      </a>
+    </li>
+    <li>
+      <a href="page-b.html">
+        Technology
+        <span class="prefetch-badge"></span>
+      </a>
+    </li>
+    <li>
+      <a href="page-c.html">
+        About
+        <span class="prefetch-badge"></span>
+      </a>
+    </li>
+  </ul>
+
+  <div class="nav-controls">
+    <label class="mode-toggle">
+      <span class="toggle-label">Speculation: ON</span>
+      <div class="toggle-switch">
+        <input type="checkbox" id="speculation-toggle" checked />
+        <span class="toggle-slider"></span>
+      </div>
+    </label>
+  </div>
+</nav>
+
+<!-- ═══════════════════════════════════════════════════════
+     MAIN CONTENT
+═══════════════════════════════════════════════════════ -->
+<main class="page-wrapper">
+
+  <!-- No-support notice (hidden by default, shown by JS if needed) -->
+  <div id="no-support-notice" style="display:none;align-items:center;gap:10px;padding:12px 20px;background:#fef9c3;border:1px solid #fef08a;border-radius:10px;font-size:0.875rem;color:var(--warning);margin-bottom:20px;">
+    <strong>Heads up:</strong> Your browser does not support the Speculation Rules API.
+    Use Chrome 109+ or Edge 109+ to see the full demo. The rest of the demo still works as regular navigation.
+  </div>
+
+  <!-- Hero -->
+  <section class="hero fade-in">
+    <div class="hero-eyebrow">Browser API Demo</div>
+    <h1>The <span>Speculation Rules</span> API</h1>
+    <p>
+      See how the browser can silently <strong>prerender</strong> and <strong>prefetch</strong> pages
+      before you even click — making navigation feel instant.
+    </p>
+  </section>
+
+  <!-- Status Panel -->
+  <div class="status-panel">
+    <div class="status-panel-title">Live Status</div>
+    <div class="status-rows">
+      <div class="status-row">
+        <span class="status-label">Browser support</span>
+        <span id="status-support"><span class="status-badge badge-gray">Checking...</span></span>
+      </div>
+      <div class="status-row">
+        <span class="status-label">Speculation rules</span>
+        <span id="status-mode"><span class="status-badge badge-gray">Checking...</span></span>
+      </div>
+      <div class="status-row">
+        <span class="status-label">Pre-rendering</span>
+        <span id="status-prerender"><span class="status-badge badge-gray">—</span></span>
+      </div>
+      <div class="status-row">
+        <span class="status-label">Prefetching</span>
+        <span id="status-prefetch"><span class="status-badge badge-gray">—</span></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- How It Works -->
+  <hr class="divider" />
+  <h2 class="section-title">How does it <span>work?</span></h2>
+
+  <div class="compare-grid">
+    <!-- Regular routing -->
+    <div class="compare-card">
+      <div class="compare-icon" style="font-size:1.1rem;font-weight:700;color:var(--text-muted);margin-bottom:12px;">Regular Routing</div>
+      <h3>Standard Navigation</h3>
+      <p>
+        The browser only fetches a page after you click a link. The full
+        network round-trip happens during navigation — you see a blank
+        screen or loading spinner.
+      </p>
+      <ul class="step-list" style="margin-top:14px;">
+        <li><span class="step-num">1</span>User clicks a link</li>
+        <li><span class="step-num">2</span>Browser sends HTTP request</li>
+        <li><span class="step-num">3</span>Server responds with HTML</li>
+        <li><span class="step-num">4</span>Browser parses &amp; renders the page</li>
+        <li><span class="step-num">5</span>Page is visible <em>(latency felt)</em></li>
+      </ul>
+    </div>
+
+    <!-- Speculation Rules -->
+    <div class="compare-card highlight">
+      <div class="compare-icon" style="font-size:1.1rem;font-weight:700;color:var(--accent);margin-bottom:12px;">Speculation Rules API</div>
+      <h3>Speculative Navigation</h3>
+      <p>
+        You declare rules in JSON and the browser speculatively fetches or
+        renders pages in the background while the user is still on the
+        current page.
+      </p>
+      <ul class="step-list" style="margin-top:14px;">
+        <li><span class="step-num">1</span>Rules declared in <code style="color:var(--accent)">&lt;script type="speculationrules"&gt;</code></li>
+        <li><span class="step-num">2</span>Browser fetches &amp; renders pages silently</li>
+        <li><span class="step-num">3</span>User clicks a link</li>
+        <li><span class="step-num">4</span>Browser swaps in the pre-rendered page</li>
+        <li><span class="step-num">5</span>Page is <strong style="color:var(--success)">instantly</strong> visible</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Code Example -->
+  <hr class="divider" />
+  <h2 class="section-title">The <span>Code</span></h2>
+  <p style="color:var(--text-muted);margin-bottom:20px;font-size:0.9rem;">
+    This is the actual <code style="color:var(--accent)">&lt;script type="speculationrules"&gt;</code>
+    injected by this demo when you toggle speculation ON. Inspect the page's
+    <code style="color:var(--accent)">&lt;head&gt;</code> to see it live.
+  </p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <div class="code-dots">
+        <span></span><span></span><span></span>
+      </div>
+      <span class="code-lang">HTML + JSON (speculationrules)</span>
+    </div>
+    <pre><span class="token-tag">&lt;script</span> <span class="token-attr">type</span>=<span class="token-val">"speculationrules"</span><span class="token-tag">&gt;</span>
+{
+  <span class="token-comment">// Prerender: browser fetches AND fully renders these pages</span>
+  <span class="token-comment">// in a hidden tab. Navigation is instant — zero latency.</span>
+  <span class="token-key">"prerender"</span>: [
+    {
+      <span class="token-key">"source"</span>: <span class="token-str">"list"</span>,
+      <span class="token-key">"urls"</span>: [<span class="token-str">"page-a.html"</span>, <span class="token-str">"page-b.html"</span>],
+      <span class="token-key">"eagerness"</span>: <span class="token-str">"eager"</span>
+    }
+  ],
+
+  <span class="token-comment">// Prefetch: browser downloads the HTML only.</span>
+  <span class="token-comment">// Saves 1 network round-trip but still parses on navigate.</span>
+  <span class="token-key">"prefetch"</span>: [
+    {
+      <span class="token-key">"source"</span>: <span class="token-str">"list"</span>,
+      <span class="token-key">"urls"</span>: [<span class="token-str">"page-c.html"</span>],
+      <span class="token-key">"eagerness"</span>: <span class="token-str">"eager"</span>
+    }
+  ]
+}
+<span class="token-tag">&lt;/script&gt;</span></pre>
+  </div>
+
+  <!-- Prefetch vs Prerender table -->
+  <hr class="divider" />
+  <h2 class="section-title"><span>Prefetch</span> vs <span>Prerender</span></h2>
+
+  <div class="card">
+    <div class="card-title">Key Differences</div>
+    <div style="overflow-x:auto;">
+      <table style="width:100%;border-collapse:collapse;font-size:0.875rem;">
+        <thead>
+          <tr style="border-bottom:1px solid var(--border);">
+            <th style="padding:10px 14px;text-align:left;color:var(--text-faint);font-weight:600;">Feature</th>
+            <th style="padding:10px 14px;text-align:left;color:var(--success);">Prefetch</th>
+            <th style="padding:10px 14px;text-align:left;color:var(--accent-2);">Prerender</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr style="border-bottom:1px solid var(--border);">
+            <td style="padding:10px 14px;color:var(--text-muted);">What it does</td>
+            <td style="padding:10px 14px;">Downloads HTML only</td>
+            <td style="padding:10px 14px;">Downloads + fully renders page</td>
+          </tr>
+          <tr style="border-bottom:1px solid var(--border);">
+            <td style="padding:10px 14px;color:var(--text-muted);">JS executed?</td>
+            <td style="padding:10px 14px;color:var(--danger);">No</td>
+            <td style="padding:10px 14px;color:var(--success);">Yes</td>
+          </tr>
+          <tr style="border-bottom:1px solid var(--border);">
+            <td style="padding:10px 14px;color:var(--text-muted);">Navigation speed</td>
+            <td style="padding:10px 14px;">Fast (no network)</td>
+            <td style="padding:10px 14px;color:var(--success);">Instant (already rendered)</td>
+          </tr>
+          <tr style="border-bottom:1px solid var(--border);">
+            <td style="padding:10px 14px;color:var(--text-muted);">Resource cost</td>
+            <td style="padding:10px 14px;">Low (HTML only)</td>
+            <td style="padding:10px 14px;color:var(--warning);">Higher (full page resources)</td>
+          </tr>
+          <tr>
+            <td style="padding:10px 14px;color:var(--text-muted);">transferSize on load</td>
+            <td style="padding:10px 14px;">0 bytes (served from cache)</td>
+            <td style="padding:10px 14px;color:var(--accent-2);">activationStart &gt; 0</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Try It -->
+  <hr class="divider" />
+  <h2 class="section-title">Try it <span>yourself</span></h2>
+  <p style="color:var(--text-muted);font-size:0.9rem;margin-bottom:20px;">
+    Toggle the switch in the top-right to turn speculation rules on/off,
+    then navigate to the pages below and check the timing panel on each page.
+    Watch the glowing badges appear on the nav links when pages are pre-loaded.
+  </p>
+
+  <div class="feature-grid">
+    <a href="page-a.html" style="text-decoration:none;">
+      <div class="feature-item" style="cursor:pointer;transition:all 0.2s;border-color:transparent;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='transparent'">
+        <h4>Products Page</h4>
+        <p>Pre-rendered — should open instantly with near-zero activation time.</p>
+        <div style="margin-top:10px;">
+          <span class="status-badge badge-blue" style="font-size:0.7rem;">Prerendered</span>
+        </div>
+      </div>
+    </a>
+    <a href="page-b.html" style="text-decoration:none;">
+      <div class="feature-item" style="cursor:pointer;transition:all 0.2s;border-color:transparent;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='transparent'">
+        <h4>Technology Page</h4>
+        <p>Pre-rendered — full render happens in background tab before click.</p>
+        <div style="margin-top:10px;">
+          <span class="status-badge badge-blue" style="font-size:0.7rem;">Prerendered</span>
+        </div>
+      </div>
+    </a>
+    <a href="page-c.html" style="text-decoration:none;">
+      <div class="feature-item" style="cursor:pointer;transition:all 0.2s;border-color:transparent;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='transparent'">
+        <h4>About Page</h4>
+        <p>Prefetched — HTML is cached, parse &amp; render still occurs on click.</p>
+        <div style="margin-top:10px;">
+          <span class="status-badge badge-green" style="font-size:0.7rem;">Prefetched</span>
+        </div>
+      </div>
+    </a>
+  </div>
+
+  <!-- Eagerness levels explanation -->
+  <hr class="divider" />
+  <h2 class="section-title">Eagerness <span>Levels</span></h2>
+  <div class="card">
+    <div class="card-title">How Eager Should the Browser Be?</div>
+    <div style="display:flex;flex-direction:column;gap:14px;font-size:0.875rem;">
+      <div style="display:flex;gap:14px;align-items:flex-start;">
+        <span class="status-badge badge-purple" style="flex-shrink:0;margin-top:2px;">immediate</span>
+        <span style="color:var(--text-muted);">Start speculating as soon as the rules are parsed. Best for pages the user is very likely to visit.</span>
+      </div>
+      <div style="display:flex;gap:14px;align-items:flex-start;">
+        <span class="status-badge badge-blue" style="flex-shrink:0;margin-top:2px;">eager</span>
+        <span style="color:var(--text-muted);">Same as immediate in current Chrome — used in this demo. Speculate right away.</span>
+      </div>
+      <div style="display:flex;gap:14px;align-items:flex-start;">
+        <span class="status-badge badge-green" style="flex-shrink:0;margin-top:2px;">moderate</span>
+        <span style="color:var(--text-muted);">Speculate when the user hovers over the link for ~200ms. Good middle ground.</span>
+      </div>
+      <div style="display:flex;gap:14px;align-items:flex-start;">
+        <span class="status-badge badge-gray" style="flex-shrink:0;margin-top:2px;">conservative</span>
+        <span style="color:var(--text-muted);">Only speculate when the user presses the mouse button down (mousedown/touchstart). Most conservative use of resources.</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- DevTools tip -->
+  <div class="card" style="background:linear-gradient(135deg,var(--surface),rgba(79,70,229,0.03));border-color:rgba(79,70,229,0.15);">
+    <div class="card-title">DevTools Tip</div>
+    <p style="font-size:0.875rem;color:var(--text-muted);margin-bottom:12px;">
+      Open Chrome DevTools and go to <strong style="color:var(--text)">Application &rarr; Speculation Rules</strong>
+      to see which pages are being pre-rendered or prefetched in real time.
+      You can also check the <strong style="color:var(--text)">Network</strong> tab to see the
+      early fetches triggered by the rules.
+    </p>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;">
+      <span class="status-badge badge-purple">Application &rarr; Speculation Rules</span>
+      <span class="status-badge badge-blue">Network tab (early prefetch)</span>
+      <span class="status-badge badge-green">Performance tab (activationStart)</span>
+    </div>
+  </div>
+
+</main>
+
+<!-- ═══════════════════════════════════════════════════════
+     FOOTER
+═══════════════════════════════════════════════════════ -->
+<footer class="footer">
+  Speculation Rules API Demo &middot;
+  <a href="https://developer.chrome.com/docs/web-platform/prerender-pages" target="_blank" rel="noopener">Chrome Docs</a> &middot;
+  <a href="https://wicg.github.io/nav-speculation/speculation-rules.html" target="_blank" rel="noopener">Spec</a>
+</footer>
+
+<script src="app.js"></script>
+</body>
+</html>

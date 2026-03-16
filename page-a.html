@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Products — Speculation Rules Demo</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════════════
+     NAVIGATION
+═══════════════════════════════════════════════════════ -->
+<nav class="nav">
+  <a href="index.html" class="nav-logo">
+    <div class="logo-icon" style="font-size:0.75rem;font-weight:800;color:white;letter-spacing:-0.03em;">SR</div>
+    SpecDemo
+  </a>
+
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li>
+      <a href="page-a.html" class="active">
+        Products
+        <span class="prefetch-badge"></span>
+      </a>
+    </li>
+    <li>
+      <a href="page-b.html">
+        Technology
+        <span class="prefetch-badge"></span>
+      </a>
+    </li>
+    <li>
+      <a href="page-c.html">
+        About
+        <span class="prefetch-badge"></span>
+      </a>
+    </li>
+  </ul>
+
+  <div class="nav-controls">
+    <label class="mode-toggle">
+      <span class="toggle-label">Speculation: ON</span>
+      <div class="toggle-switch">
+        <input type="checkbox" id="speculation-toggle" checked />
+        <span class="toggle-slider"></span>
+      </div>
+    </label>
+  </div>
+</nav>
+
+<!-- ═══════════════════════════════════════════════════════
+     MAIN CONTENT
+═══════════════════════════════════════════════════════ -->
+<main class="page-wrapper fade-in">
+
+  <!-- Arrival Banner -->
+  <div id="arrival-banner" class="arrival-banner"></div>
+
+  <!-- Breadcrumb -->
+  <div class="breadcrumb">
+    <a href="index.html">Home</a>
+    <span>&rsaquo;</span>
+    <span style="color:var(--text-muted);">Products</span>
+  </div>
+
+  <!-- Page Hero -->
+  <div class="page-hero">
+    <h1>Products</h1>
+    <p>
+      This page was declared as a <strong style="color:var(--accent-2)">prerender</strong> target.
+      If speculation rules were active, the browser rendered this page in a hidden context
+      before you clicked the link.
+    </p>
+  </div>
+
+  <!-- Navigation Timing Panel -->
+  <div class="card">
+    <div class="card-title">Navigation Timing — How did you arrive here?</div>
+    <p style="font-size:0.875rem;color:var(--text-muted);margin-bottom:12px;">
+      The data below comes from <code style="color:var(--accent)">PerformanceNavigationTiming</code>.
+      If this page was pre-rendered, you'll see <strong>activationStart &gt; 0</strong> and a
+      <strong>near-zero TTFB</strong> — no network was needed.
+    </p>
+    <div id="timing-display" class="timing-display">
+      <span class="timing-muted">Loading timing data...</span>
+    </div>
+  </div>
+
+  <!-- What Prerender Means -->
+  <div class="compare-grid">
+    <div class="compare-card">
+      <h3>Without Prerender</h3>
+      <p style="margin-bottom:12px;">
+        When you click the link, the browser starts from scratch:
+        resolves DNS, opens a TCP connection, sends the request, waits
+        for the server, parses HTML, loads CSS &amp; JS, and finally paints.
+      </p>
+      <p style="font-size:0.8rem;color:var(--text-faint);">
+        Typical load: <span style="color:var(--warning)">300–2000ms</span>
+      </p>
+    </div>
+    <div class="compare-card highlight">
+      <h3>With Prerender</h3>
+      <p style="margin-bottom:12px;">
+        All of that work was already done while you were on the previous page.
+        Clicking the link just swaps the hidden pre-rendered page into view —
+        no waiting at all.
+      </p>
+      <p style="font-size:0.8rem;color:var(--text-faint);">
+        Typical activation: <span style="color:var(--success)">&lt; 5ms</span>
+      </p>
+    </div>
+  </div>
+
+  <!-- What the browser did -->
+  <div class="card">
+    <div class="card-title">What the browser does during prerender</div>
+    <div style="display:flex;flex-direction:column;gap:12px;">
+      <div style="display:flex;gap:12px;align-items:flex-start;font-size:0.875rem;">
+        <span style="color:var(--success);font-weight:700;flex-shrink:0;">Yes</span>
+        <span style="color:var(--text-muted);">Fetches the full HTML document</span>
+      </div>
+      <div style="display:flex;gap:12px;align-items:flex-start;font-size:0.875rem;">
+        <span style="color:var(--success);font-weight:700;flex-shrink:0;">Yes</span>
+        <span style="color:var(--text-muted);">Parses the DOM tree</span>
+      </div>
+      <div style="display:flex;gap:12px;align-items:flex-start;font-size:0.875rem;">
+        <span style="color:var(--success);font-weight:700;flex-shrink:0;">Yes</span>
+        <span style="color:var(--text-muted);">Loads and applies CSS stylesheets</span>
+      </div>
+      <div style="display:flex;gap:12px;align-items:flex-start;font-size:0.875rem;">
+        <span style="color:var(--success);font-weight:700;flex-shrink:0;">Yes</span>
+        <span style="color:var(--text-muted);">Executes JavaScript (with some restrictions)</span>
+      </div>
+      <div style="display:flex;gap:12px;align-items:flex-start;font-size:0.875rem;">
+        <span style="color:var(--success);font-weight:700;flex-shrink:0;">Yes</span>
+        <span style="color:var(--text-muted);">Renders the composited visual layer</span>
+      </div>
+      <div style="display:flex;gap:12px;align-items:flex-start;font-size:0.875rem;">
+        <span style="color:var(--warning);font-weight:700;flex-shrink:0;">Wait</span>
+        <span style="color:var(--text-muted);">Does NOT display it — waits for activation (the click)</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Sample Products Grid (cosmetic) -->
+  <hr class="divider" />
+  <h2 class="section-title">Sample <span>Products</span></h2>
+  <p style="color:var(--text-muted);font-size:0.875rem;margin-bottom:20px;">
+    Placeholder content — the real demo value is the timing panel above.
+  </p>
+
+  <div class="feature-grid">
+    <div class="feature-item">
+      <h4>Quantum Display</h4>
+      <p>4K HDR panel with 240Hz refresh and near-zero response time.</p>
+    </div>
+    <div class="feature-item">
+      <h4>AuraSound Pro</h4>
+      <p>Spatial audio headset with adaptive noise cancellation.</p>
+    </div>
+    <div class="feature-item">
+      <h4>SwiftKeys X</h4>
+      <p>Mechanical keyboard with ultra-low latency wireless protocol.</p>
+    </div>
+  </div>
+
+  <!-- Navigation -->
+  <div class="btn-row">
+    <a href="index.html" class="btn btn-outline">&larr; Back to Home</a>
+    <a href="page-b.html" class="btn btn-primary">Technology Page &rarr;</a>
+  </div>
+
+</main>
+
+<footer class="footer">
+  Speculation Rules API Demo &middot;
+  <a href="https://developer.chrome.com/docs/web-platform/prerender-pages" target="_blank" rel="noopener">Chrome Docs</a>
+</footer>
+
+<script src="app.js"></script>
+</body>
+</html>

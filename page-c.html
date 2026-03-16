@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>About — Speculation Rules Demo</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════════════
+     NAVIGATION
+═══════════════════════════════════════════════════════ -->
+<nav class="nav">
+  <a href="index.html" class="nav-logo">
+    <div class="logo-icon" style="font-size:0.75rem;font-weight:800;color:white;letter-spacing:-0.03em;">SR</div>
+    SpecDemo
+  </a>
+
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li>
+      <a href="page-a.html">
+        Products
+        <span class="prefetch-badge"></span>
+      </a>
+    </li>
+    <li>
+      <a href="page-b.html">
+        Technology
+        <span class="prefetch-badge"></span>
+      </a>
+    </li>
+    <li>
+      <a href="page-c.html" class="active">
+        About
+        <span class="prefetch-badge"></span>
+      </a>
+    </li>
+  </ul>
+
+  <div class="nav-controls">
+    <label class="mode-toggle">
+      <span class="toggle-label">Speculation: ON</span>
+      <div class="toggle-switch">
+        <input type="checkbox" id="speculation-toggle" checked />
+        <span class="toggle-slider"></span>
+      </div>
+    </label>
+  </div>
+</nav>
+
+<!-- ═══════════════════════════════════════════════════════
+     MAIN CONTENT
+═══════════════════════════════════════════════════════ -->
+<main class="page-wrapper fade-in">
+
+  <!-- Arrival Banner -->
+  <div id="arrival-banner" class="arrival-banner"></div>
+
+  <!-- Breadcrumb -->
+  <div class="breadcrumb">
+    <a href="index.html">Home</a>
+    <span>&rsaquo;</span>
+    <span style="color:var(--text-muted);">About</span>
+  </div>
+
+  <!-- Page Hero -->
+  <div class="page-hero">
+    <h1>About</h1>
+    <p>
+      This page was declared as a <strong style="color:var(--success)">prefetch</strong> target —
+      the HTML was downloaded early, but parsing and rendering still happen when you click.
+      Compare the timing numbers with the prerendered pages.
+    </p>
+  </div>
+
+  <!-- Navigation Timing Panel -->
+  <div class="card">
+    <div class="card-title">Navigation Timing — How did you arrive here?</div>
+    <p style="font-size:0.875rem;color:var(--text-muted);margin-bottom:12px;">
+      With <strong>prefetch</strong>, <code style="color:var(--accent)">transferSize</code> should be 0
+      (HTML came from cache), but <code style="color:var(--accent)">domLoad</code> and
+      <code style="color:var(--accent)">fullLoad</code> will still show real parse/render time —
+      unlike prerender, where everything was done ahead of time.
+    </p>
+    <div id="timing-display" class="timing-display">
+      <span class="timing-muted">Loading timing data...</span>
+    </div>
+  </div>
+
+  <!-- Prefetch vs Prerender comparison for this page -->
+  <hr class="divider" />
+  <h2 class="section-title">Prefetch vs Prerender — <span>Side by Side</span></h2>
+
+  <div class="compare-grid">
+    <div class="compare-card highlight">
+      <h3 style="color:var(--success);">Prefetch (this page)</h3>
+      <ul class="step-list">
+        <li><span class="step-num">1</span>Rules parsed &rarr; browser fetches HTML</li>
+        <li><span class="step-num">2</span>HTML stored in prefetch cache</li>
+        <li><span class="step-num">3</span>You click the link</li>
+        <li><span class="step-num">4</span>Browser serves HTML from cache (0 bytes transferred)</li>
+        <li><span class="step-num">5</span>Normal parse + render still runs</li>
+        <li><span class="step-num">6</span>Page becomes visible</li>
+      </ul>
+      <p style="font-size:0.8rem;color:var(--text-faint);margin-top:12px;">
+        Saves: <span style="color:var(--success)">1 network round-trip</span>
+      </p>
+    </div>
+    <div class="compare-card">
+      <h3 style="color:var(--accent-2);">Prerender (Products/Technology)</h3>
+      <ul class="step-list">
+        <li><span class="step-num">1</span>Rules parsed &rarr; browser fetches HTML</li>
+        <li><span class="step-num">2</span>Full parse + CSS + JS runs in hidden tab</li>
+        <li><span class="step-num">3</span>Composited frame held in memory</li>
+        <li><span class="step-num">4</span>You click the link</li>
+        <li><span class="step-num">5</span>Browser <em>activates</em> the pre-rendered page</li>
+        <li><span class="step-num">6</span>Page visible <strong style="color:var(--success)">instantly</strong></li>
+      </ul>
+      <p style="font-size:0.8rem;color:var(--text-faint);margin-top:12px;">
+        Saves: <span style="color:var(--success)">network + parse + render time</span>
+      </p>
+    </div>
+  </div>
+
+  <!-- Source rules reference -->
+  <hr class="divider" />
+  <h2 class="section-title">Rule <span>Sources</span></h2>
+  <p style="color:var(--text-muted);font-size:0.875rem;margin-bottom:16px;">
+    Beyond the <code style="color:var(--accent)">"list"</code> source used in this demo,
+    the Speculation Rules API supports other source types for dynamic or link-based speculation:
+  </p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <div class="code-dots"><span></span><span></span><span></span></div>
+      <span class="code-lang">JSON — Different source types</span>
+    </div>
+    <pre>{
+  <span class="token-key">"prerender"</span>: [
+    {
+      <span class="token-comment">// "list" — explicit URL array (used in this demo)</span>
+      <span class="token-key">"source"</span>: <span class="token-str">"list"</span>,
+      <span class="token-key">"urls"</span>: [<span class="token-str">"/products"</span>, <span class="token-str">"/checkout"</span>]
+    },
+    {
+      <span class="token-comment">// "document" — speculate on matching links IN the page</span>
+      <span class="token-key">"source"</span>: <span class="token-str">"document"</span>,
+      <span class="token-key">"where"</span>: {
+        <span class="token-comment">// Prerender any same-origin link in .main-content</span>
+        <span class="token-key">"and"</span>: [
+          { <span class="token-key">"href_matches"</span>: <span class="token-str">"/*"</span> },
+          { <span class="token-key">"selector_matches"</span>: <span class="token-str">".main-content a"</span> }
+        ]
+      },
+      <span class="token-key">"eagerness"</span>: <span class="token-str">"moderate"</span>
+    }
+  ]
+}</pre>
+  </div>
+
+  <!-- Why it matters -->
+  <div class="card" style="background:linear-gradient(135deg,var(--surface),rgba(8,145,178,0.04));border-color:rgba(8,145,178,0.15);">
+    <div class="card-title">Real World Impact</div>
+    <p style="font-size:0.875rem;color:var(--text-muted);margin-bottom:14px;">
+      Google's research shows that improving page load time directly impacts user retention and conversion:
+    </p>
+    <div style="display:flex;flex-direction:column;gap:10px;font-size:0.875rem;">
+      <div style="display:flex;gap:10px;align-items:flex-start;">
+        <span style="color:var(--accent-2);font-weight:700;flex-shrink:0;">&rarr;</span>
+        <span style="color:var(--text-muted);">A <strong style="color:var(--text)">100ms</strong> improvement in load time can increase conversion rates by <strong style="color:var(--success)">~1%</strong></span>
+      </div>
+      <div style="display:flex;gap:10px;align-items:flex-start;">
+        <span style="color:var(--accent-2);font-weight:700;flex-shrink:0;">&rarr;</span>
+        <span style="color:var(--text-muted);">Prerender can bring Largest Contentful Paint (LCP) to <strong style="color:var(--success)">near-zero</strong></span>
+      </div>
+      <div style="display:flex;gap:10px;align-items:flex-start;">
+        <span style="color:var(--accent-2);font-weight:700;flex-shrink:0;">&rarr;</span>
+        <span style="color:var(--text-muted);">The API is completely <strong style="color:var(--text)">progressive</strong> — browsers without support simply ignore the script tag</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Navigation -->
+  <div class="btn-row">
+    <a href="page-b.html" class="btn btn-outline">&larr; Technology</a>
+    <a href="index.html" class="btn btn-primary">&larr; Back to Home</a>
+  </div>
+
+</main>
+
+<footer class="footer">
+  Speculation Rules API Demo &middot;
+  <a href="https://developer.chrome.com/docs/web-platform/prerender-pages" target="_blank" rel="noopener">Chrome Docs</a>
+</footer>
+
+<script src="app.js"></script>
+</body>
+</html>
