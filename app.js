@@ -11,10 +11,14 @@
 // ─── Constants ────────────────────────────────────────────────────────────────
 
 const PAGES = [
-  { href: 'page-a.html', label: 'Products',  icon: '📦' },
-  { href: 'page-b.html', label: 'Technology', icon: '⚡' },
-  { href: 'page-c.html', label: 'About',     icon: '🔬' },
+  { href: 'page-a.html', label: 'Products',       speculation: 'prerender' },
+  { href: 'page-b.html', label: 'Technology',     speculation: 'prerender' },
+  { href: 'page-c.html', label: 'About',          speculation: 'prefetch'  },
+  { href: 'page-d.html', label: 'No Speculation', speculation: 'none'      },
 ];
+
+// page-d.html is deliberately excluded from all speculation rules.
+// It is the "control" page — always loaded as a standard cold navigation.
 
 const STORAGE_KEY   = 'speculation_demo_mode';   // 'on' | 'off'
 const PREFETCH_KEY  = 'prefetched_pages';         // JSON array of URLs

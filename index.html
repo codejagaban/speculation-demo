@@ -39,6 +39,11 @@
         <span class="prefetch-badge"></span>
       </a>
     </li>
+    <li>
+      <a href="page-d.html" style="color:var(--danger);">
+        No Speculation
+      </a>
+    </li>
   </ul>
 
   <div class="nav-controls">
@@ -259,6 +264,15 @@
         <p>Prefetched — HTML is cached, parse &amp; render still occurs on click.</p>
         <div style="margin-top:10px;">
           <span class="status-badge badge-green" style="font-size:0.7rem;">Prefetched</span>
+        </div>
+      </div>
+    </a>
+    <a href="page-d.html" style="text-decoration:none;">
+      <div class="feature-item" style="cursor:pointer;transition:all 0.2s;border-color:transparent;" onmouseover="this.style.borderColor='var(--danger)'" onmouseout="this.style.borderColor='transparent'">
+        <h4>No Speculation Page</h4>
+        <p>Excluded from all rules — full cold fetch every time. Use this as the baseline for comparison.</p>
+        <div style="margin-top:10px;">
+          <span class="status-badge badge-red" style="font-size:0.7rem;">Standard Navigation</span>
         </div>
       </div>
     </a>
