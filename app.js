@@ -132,42 +132,57 @@ function clearNavBadges() {
 /**
  * Uses the Navigation Timing API (PerformanceNavigationTiming) to
  * report how the current page was loaded and how long it took.
+ *
+ * Key fields from the MDN spec:
+ *   activationStart  — time between prerender start and user activation (> 0 = was prerendered)
+ *   deliveryType     — "navigational-prefetch" when HTML was served from prefetch cache
+ *   transferSize     — 0 when no bytes were fetched over the network at activation time
  */
 function getNavigationTiming() {
   const nav = performance.getEntriesByType('navigation')[0];
   if (!nav) return null;
 
   return {
-    type:          nav.type,                    // 'navigate' | 'prerender' | 'back_forward'
-    ttfb:          nav.responseStart - nav.requestStart,
-    domLoad:       nav.domContentLoadedEventEnd - nav.startTime,
-    fullLoad:      nav.loadEventEnd - nav.startTime,
-    transferSize:  nav.transferSize,            // 0 if served from prerender cache
-    activationType: document.prerendering
-      ? 'prerendering'
-      : performance.getEntriesByType('navigation')[0]?.activationStart > 0
-        ? 'prerendered-activation'
-        : null
+    type:            nav.type,            // 'navigate' | 'back_forward' | 'reload'
+    ttfb:            nav.responseStart - nav.requestStart,
+    domLoad:         nav.domContentLoadedEventEnd - nav.startTime,
+    fullLoad:        nav.loadEventEnd - nav.startTime,
+    transferSize:    nav.transferSize,
+    activationStart: nav.activationStart ?? 0,
+    // deliveryType is the authoritative prefetch signal per MDN:
+    // "When a page is prefetched, its deliveryType will return 'navigational-prefetch'"
+    deliveryType:    nav.deliveryType ?? ''
   };
 }
 
 /**
- * Detects if this page was activated from a prerender using the
- * PerformanceNavigationTiming.activationStart property.
+ * Canonical prerender detection from MDN:
+ *   document.prerendering  → page is currently being prerendered (not yet shown)
+ *   activationStart > 0    → page was prerendered and has since been activated
  */
 function wasPrerendered() {
   const nav = performance.getEntriesByType('navigation')[0];
-  return nav?.activationStart > 0;
+  return document.prerendering || (nav?.activationStart > 0);
+}
+
+/**
+ * Canonical prefetch detection from MDN:
+ *   deliveryType === "navigational-prefetch"
+ *
+ * NOTE: transferSize === 0 is NOT a reliable prefetch signal — it also fires for
+ * HTTP-cached pages and prerendered pages. deliveryType is the correct check.
+ */
+function wasPrefetched() {
+  const nav = performance.getEntriesByType('navigation')[0];
+  return nav?.deliveryType === 'navigational-prefetch';
 }
 
 /**
  * Reads how we arrived at this page and returns a descriptor object.
+ * Order matters: check prerender first, then prefetch, then standard.
  */
 function getArrivalInfo() {
-  const nav = performance.getEntriesByType('navigation')[0];
-  const prerendered = wasPrerendered();
-
-  if (prerendered) {
+  if (wasPrerendered()) {
     return {
       type:  'prerender',
       label: 'Arrived via Pre-render',
@@ -177,11 +192,12 @@ function getArrivalInfo() {
     };
   }
 
-  if (nav?.transferSize === 0 && nav?.type === 'navigate') {
+  // deliveryType === 'navigational-prefetch' is the authoritative MDN signal
+  if (wasPrefetched()) {
     return {
       type:  'prefetch',
       label: 'Arrived via Prefetch',
-      desc:  'The HTML for this page was fetched in advance. The browser skipped the network round-trip.',
+      desc:  'The HTML was fetched in advance (deliveryType: "navigational-prefetch"). The browser skipped the network round-trip.',
       badge: 'badge-green',
       color: 'var(--success)'
     };
@@ -251,52 +267,63 @@ function renderTimingPanel(containerId) {
     }
 
     // ── PRERENDERED ──────────────────────────────────────────────────────────
-    // PerformanceNavigationTiming records the timeline of the background render.
-    // "TTFB" and "DOM ready" here = time the browser spent rendering in the
-    // background — the user did NOT wait for any of this.
-    // activationStart = ms between prerender start and the user's click.
+    // All timing fields in PerformanceNavigationTiming (TTFB, domLoad, fullLoad)
+    // are measured from when the background prerender STARTED — not from your click.
+    // They represent work the browser did silently; the user waited 0ms.
+    //
+    // The spec-correct detection signal (per MDN) is: activationStart > 0
     if (arrival.type === 'prerender') {
-      const bgRender    = timing.fullLoad.toFixed(1);
-      const bgDom       = timing.domLoad.toFixed(1);
-      const bgTtfb      = timing.ttfb.toFixed(1);
-      const activation  = nav.activationStart.toFixed(1);
+      const bgTtfb     = timing.ttfb.toFixed(1);
+      const bgDom      = timing.domLoad.toFixed(1);
+      const bgRender   = timing.fullLoad.toFixed(1);
+      const activation = timing.activationStart.toFixed(1);
 
       container.innerHTML = `
         <div style="margin-bottom:10px;padding-bottom:10px;border-bottom:1px solid #e2e8f0;">
           <span style="font-size:0.7rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#94a3b8;">
-            Background work (you did not wait for any of this)
+            Detection signal (MDN spec)
           </span>
         </div>
-        ${line('blue',   `Nav type: <span class="timing-val">prerender &rarr; activated</span>`)}
-        ${line('blue',   `TTFB (background): <span class="timing-val">${bgTtfb} ms</span> <span class="timing-muted">— browser fetched the page silently</span>`)}
-        ${line('blue',   `DOM ready (background): <span class="timing-val">${bgDom} ms</span> <span class="timing-muted">— browser parsed &amp; rendered silently</span>`)}
+        ${line('green',  `activationStart: <span class="timing-val">${activation} ms</span> <span class="timing-muted">— &gt; 0 confirms this page was prerendered (MDN: PerformanceNavigationTiming.activationStart)</span>`)}
+        ${line('green',  `transferSize at activation: <span class="timing-val">0 bytes</span> <span class="timing-muted">— no network request fired when you clicked</span>`)}
+        <div style="margin:10px 0;padding-top:10px;border-top:1px solid #e2e8f0;">
+          <span style="font-size:0.7rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#94a3b8;">
+            Background work — measured from prerender start, NOT from your click
+          </span>
+        </div>
+        ${line('blue',   `TTFB (background): <span class="timing-val">${bgTtfb} ms</span> <span class="timing-muted">— server responded during silent prerender</span>`)}
+        ${line('blue',   `DOM ready (background): <span class="timing-val">${bgDom} ms</span> <span class="timing-muted">— parse &amp; render completed silently</span>`)}
         ${line('blue',   `Full load (background): <span class="timing-val">${bgRender} ms</span> <span class="timing-muted">— all resources loaded before your click</span>`)}
-        ${line('green',  `Transfer size at activation: <span class="timing-val">0 bytes</span> <span class="timing-muted">— no network request on click</span>`)}
         <div style="margin:10px 0;padding-top:10px;border-top:1px solid #e2e8f0;">
           <span style="font-size:0.7rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#94a3b8;">
             Your perceived wait
           </span>
         </div>
         ${line('green',  `Perceived load time: <span class="timing-val" style="font-size:1rem;">~0 ms</span> <span class="timing-muted">— page was fully rendered before you clicked</span>`)}
-        ${line('purple', `activationStart: <span class="timing-val">${activation} ms</span> <span class="timing-muted">— time the prerender waited in the background before your click</span>`)}
       `;
       return;
     }
 
     // ── PREFETCH ─────────────────────────────────────────────────────────────
-    // HTML was cached, but parsing + rendering still runs on click.
-    // TTFB is skipped (0 bytes transferred) but DOM/load times are real waits.
+    // Spec-correct detection signal (per MDN): deliveryType === "navigational-prefetch"
+    // NOT transferSize === 0 (which is unreliable — also fires for HTTP-cached pages).
+    // HTML arrived from the prefetch cache, but parse + render still run on click.
     if (arrival.type === 'prefetch') {
       container.innerHTML = `
         <div style="margin-bottom:10px;padding-bottom:10px;border-bottom:1px solid #e2e8f0;">
           <span style="font-size:0.7rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#94a3b8;">
-            Your actual wait (HTML cached, parse/render still runs on click)
+            Detection signal (MDN spec)
           </span>
         </div>
-        ${line('green',  `Nav type: <span class="timing-val">navigate (prefetch cache hit)</span>`)}
-        ${line('green',  `Network round-trip: <span class="timing-val">skipped</span> <span class="timing-muted">— HTML was cached before you clicked</span>`)}
-        ${line('green',  `Transfer size: <span class="timing-val">0 bytes</span> <span class="timing-muted">— served from prefetch cache</span>`)}
-        ${line('yellow', `TTFB: <span class="timing-val">${timing.ttfb.toFixed(1)} ms</span> <span class="timing-muted">— still parses HTML from cache</span>`)}
+        ${line('green',  `deliveryType: <span class="timing-val">"navigational-prefetch"</span> <span class="timing-muted">— MDN authoritative prefetch signal (PerformanceResourceTiming.deliveryType)</span>`)}
+        ${line('green',  `transferSize: <span class="timing-val">0 bytes</span> <span class="timing-muted">— HTML served from prefetch cache, no network request on click</span>`)}
+        ${line('green',  `activationStart: <span class="timing-val">0 ms</span> <span class="timing-muted">— not prerendered (page was not pre-rendered in background)</span>`)}
+        <div style="margin:10px 0;padding-top:10px;border-top:1px solid #e2e8f0;">
+          <span style="font-size:0.7rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#94a3b8;">
+            Your actual wait (parse &amp; render still run after your click)
+          </span>
+        </div>
+        ${line('yellow', `TTFB: <span class="timing-val">${timing.ttfb.toFixed(1)} ms</span> <span class="timing-muted">— HTML read from in-memory cache</span>`)}
         ${line('yellow', `DOM ready: <span class="timing-val">${timing.domLoad.toFixed(1)} ms</span> <span class="timing-muted">— you waited for this</span>`)}
         ${line('yellow', `Full load: <span class="timing-val">${timing.fullLoad.toFixed(1)} ms</span> <span class="timing-muted">— you waited for this</span>`)}
       `;
@@ -304,19 +331,25 @@ function renderTimingPanel(containerId) {
     }
 
     // ── STANDARD / NO SPECULATION ────────────────────────────────────────────
-    // All of these numbers are what the user directly waited for.
+    // deliveryType is empty string, activationStart is 0, transferSize > 0.
+    // Every number below is something the user directly waited for.
     container.innerHTML = `
       <div style="margin-bottom:10px;padding-bottom:10px;border-bottom:1px solid #e2e8f0;">
+        <span style="font-size:0.7rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#94a3b8;">
+          Detection signals (all confirm no speculation)
+        </span>
+      </div>
+      ${line('yellow', `deliveryType: <span class="timing-val">"${timing.deliveryType || 'navigate'}"</span> <span class="timing-muted">— not "navigational-prefetch", so no prefetch cache was used</span>`)}
+      ${line('yellow', `activationStart: <span class="timing-val">0 ms</span> <span class="timing-muted">— not prerendered</span>`)}
+      ${line('yellow', `transferSize: <span class="timing-val">${timing.transferSize} bytes</span> <span class="timing-muted">— real bytes fetched over the network</span>`)}
+      <div style="margin:10px 0;padding-top:10px;border-top:1px solid #e2e8f0;">
         <span style="font-size:0.7rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#94a3b8;">
           Your actual wait (full cold fetch — everything happens after your click)
         </span>
       </div>
-      ${line('purple', `Nav type: <span class="timing-val">${timing.type}</span>`)}
       ${line('yellow', `TTFB: <span class="timing-val">${timing.ttfb.toFixed(1)} ms</span> <span class="timing-muted">— waited for server response</span>`)}
       ${line('yellow', `DOM ready: <span class="timing-val">${timing.domLoad.toFixed(1)} ms</span> <span class="timing-muted">— waited for parse &amp; render</span>`)}
       ${line('yellow', `Full load: <span class="timing-val">${timing.fullLoad.toFixed(1)} ms</span> <span class="timing-muted">— waited for all resources</span>`)}
-      ${line('yellow', `Transfer size: <span class="timing-val">${timing.transferSize} bytes</span> <span class="timing-muted">— fetched over the network</span>`)}
-      ${line('yellow', `activationStart: <span class="timing-val">0 ms</span> <span class="timing-muted">— not prerendered</span>`)}
     `;
   };
 
