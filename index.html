@@ -62,6 +62,16 @@
 ═══════════════════════════════════════════════════════ -->
 <main class="page-wrapper">
 
+  <!-- file:// protocol warning (shown by JS if needed) -->
+  <div id="file-protocol-notice" style="display:none;flex-direction:column;gap:6px;padding:14px 20px;background:#fef9c3;border:1px solid #fef08a;border-radius:10px;font-size:0.875rem;color:#92400e;margin-bottom:20px;line-height:1.6;">
+    <strong style="color:#78350f;">Speculation rules require HTTP — you are on <code>file://</code></strong>
+    The browser silently ignores <code>&lt;script type="speculationrules"&gt;</code> on file:// URLs,
+    so every page will load as a standard cold fetch. Serve this folder with a local server to see the real difference:
+    <code style="display:inline-block;margin-top:4px;background:#fef08a;padding:3px 10px;border-radius:4px;font-size:0.8rem;">
+      npx serve .&nbsp;&nbsp;&nbsp;or&nbsp;&nbsp;&nbsp;python -m http.server 8080
+    </code>
+  </div>
+
   <!-- No-support notice (hidden by default, shown by JS if needed) -->
   <div id="no-support-notice" style="display:none;align-items:center;gap:10px;padding:12px 20px;background:#fef9c3;border:1px solid #fef08a;border-radius:10px;font-size:0.875rem;color:var(--warning);margin-bottom:20px;">
     <strong>Heads up:</strong> Your browser does not support the Speculation Rules API.

@@ -198,12 +198,50 @@ function getArrivalInfo() {
 
 // ─── Timing Display ───────────────────────────────────────────────────────────
 
+/**
+ * Renders the timing panel with context-aware labels.
+ *
+ * KEY DISTINCTION:
+ *   For prerendered pages, PerformanceNavigationTiming metrics like
+ *   "TTFB" and "DOM ready" reflect how long the BACKGROUND prerender took —
+ *   NOT how long the user waited. The user's perceived wait is ~0ms.
+ *
+ *   For standard / prefetch pages, these metrics directly represent
+ *   what the user waited for.
+ */
 function renderTimingPanel(containerId) {
   const container = document.getElementById(containerId);
   if (!container) return;
 
-  // Wait for load event to ensure all timing data is available
+  // If on file://, speculation rules are silently ignored by the browser.
+  // Inject a warning so the user knows why they might see cold-load numbers.
+  if (window.location.protocol === 'file:') {
+    const warn = document.createElement('div');
+    warn.style.cssText = [
+      'background:#fef9c3',
+      'border:1px solid #fef08a',
+      'border-radius:8px',
+      'padding:12px 16px',
+      'font-size:0.8rem',
+      'color:#92400e',
+      'margin-bottom:12px',
+      'line-height:1.5'
+    ].join(';');
+    warn.innerHTML = `
+      <strong>Speculation rules require HTTP/HTTPS.</strong>
+      You are viewing this page via <code>file://</code>, so the browser
+      will not prerender or prefetch any pages — all navigations are cold loads.
+      Serve the folder with a local HTTP server to see the real difference:
+      <br><br>
+      <code style="background:#fef08a;padding:2px 6px;border-radius:4px;">
+        npx serve .  &nbsp;or&nbsp;  python -m http.server 8080
+      </code>
+    `;
+    container.parentNode.insertBefore(warn, container);
+  }
+
   const render = () => {
+    const nav     = performance.getEntriesByType('navigation')[0];
     const timing  = getNavigationTiming();
     const arrival = getArrivalInfo();
 
@@ -212,39 +250,74 @@ function renderTimingPanel(containerId) {
       return;
     }
 
-    const lines = [
-      {
-        dot: arrival.type === 'prerender' ? 'blue' : arrival.type === 'prefetch' ? 'green' : 'yellow',
-        text: `Activation type: <span class="timing-val">${arrival.label}</span>`
-      },
-      {
-        dot: 'purple',
-        text: `Nav type (PerformanceNavigationTiming): <span class="timing-val">${timing.type}</span>`
-      },
-      {
-        dot: timing.ttfb < 5 ? 'green' : 'yellow',
-        text: `TTFB: <span class="timing-val">${timing.ttfb.toFixed(1)} ms</span> <span class="timing-muted">(time to first byte)</span>`
-      },
-      {
-        dot: timing.domLoad < 50 ? 'green' : 'yellow',
-        text: `DOM ready: <span class="timing-val">${timing.domLoad.toFixed(1)} ms</span>`
-      },
-      {
-        dot: 'blue',
-        text: `Full load: <span class="timing-val">${timing.fullLoad.toFixed(1)} ms</span>`
-      },
-      {
-        dot: timing.transferSize === 0 ? 'green' : 'yellow',
-        text: `Transfer size: <span class="timing-val">${timing.transferSize === 0 ? '0 bytes (cache hit ✓)' : timing.transferSize + ' bytes'}</span>`
-      }
-    ];
+    // ── PRERENDERED ──────────────────────────────────────────────────────────
+    // PerformanceNavigationTiming records the timeline of the background render.
+    // "TTFB" and "DOM ready" here = time the browser spent rendering in the
+    // background — the user did NOT wait for any of this.
+    // activationStart = ms between prerender start and the user's click.
+    if (arrival.type === 'prerender') {
+      const bgRender    = timing.fullLoad.toFixed(1);
+      const bgDom       = timing.domLoad.toFixed(1);
+      const bgTtfb      = timing.ttfb.toFixed(1);
+      const activation  = nav.activationStart.toFixed(1);
 
-    container.innerHTML = lines.map(l => `
-      <div class="timing-line" style="color:#24292f;">
-        <div class="timing-dot ${l.dot}"></div>
-        <span>${l.text}</span>
+      container.innerHTML = `
+        <div style="margin-bottom:10px;padding-bottom:10px;border-bottom:1px solid #e2e8f0;">
+          <span style="font-size:0.7rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#94a3b8;">
+            Background work (you did not wait for any of this)
+          </span>
+        </div>
+        ${line('blue',   `Nav type: <span class="timing-val">prerender &rarr; activated</span>`)}
+        ${line('blue',   `TTFB (background): <span class="timing-val">${bgTtfb} ms</span> <span class="timing-muted">— browser fetched the page silently</span>`)}
+        ${line('blue',   `DOM ready (background): <span class="timing-val">${bgDom} ms</span> <span class="timing-muted">— browser parsed &amp; rendered silently</span>`)}
+        ${line('blue',   `Full load (background): <span class="timing-val">${bgRender} ms</span> <span class="timing-muted">— all resources loaded before your click</span>`)}
+        ${line('green',  `Transfer size at activation: <span class="timing-val">0 bytes</span> <span class="timing-muted">— no network request on click</span>`)}
+        <div style="margin:10px 0;padding-top:10px;border-top:1px solid #e2e8f0;">
+          <span style="font-size:0.7rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#94a3b8;">
+            Your perceived wait
+          </span>
+        </div>
+        ${line('green',  `Perceived load time: <span class="timing-val" style="font-size:1rem;">~0 ms</span> <span class="timing-muted">— page was fully rendered before you clicked</span>`)}
+        ${line('purple', `activationStart: <span class="timing-val">${activation} ms</span> <span class="timing-muted">— time the prerender waited in the background before your click</span>`)}
+      `;
+      return;
+    }
+
+    // ── PREFETCH ─────────────────────────────────────────────────────────────
+    // HTML was cached, but parsing + rendering still runs on click.
+    // TTFB is skipped (0 bytes transferred) but DOM/load times are real waits.
+    if (arrival.type === 'prefetch') {
+      container.innerHTML = `
+        <div style="margin-bottom:10px;padding-bottom:10px;border-bottom:1px solid #e2e8f0;">
+          <span style="font-size:0.7rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#94a3b8;">
+            Your actual wait (HTML cached, parse/render still runs on click)
+          </span>
+        </div>
+        ${line('green',  `Nav type: <span class="timing-val">navigate (prefetch cache hit)</span>`)}
+        ${line('green',  `Network round-trip: <span class="timing-val">skipped</span> <span class="timing-muted">— HTML was cached before you clicked</span>`)}
+        ${line('green',  `Transfer size: <span class="timing-val">0 bytes</span> <span class="timing-muted">— served from prefetch cache</span>`)}
+        ${line('yellow', `TTFB: <span class="timing-val">${timing.ttfb.toFixed(1)} ms</span> <span class="timing-muted">— still parses HTML from cache</span>`)}
+        ${line('yellow', `DOM ready: <span class="timing-val">${timing.domLoad.toFixed(1)} ms</span> <span class="timing-muted">— you waited for this</span>`)}
+        ${line('yellow', `Full load: <span class="timing-val">${timing.fullLoad.toFixed(1)} ms</span> <span class="timing-muted">— you waited for this</span>`)}
+      `;
+      return;
+    }
+
+    // ── STANDARD / NO SPECULATION ────────────────────────────────────────────
+    // All of these numbers are what the user directly waited for.
+    container.innerHTML = `
+      <div style="margin-bottom:10px;padding-bottom:10px;border-bottom:1px solid #e2e8f0;">
+        <span style="font-size:0.7rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#94a3b8;">
+          Your actual wait (full cold fetch — everything happens after your click)
+        </span>
       </div>
-    `).join('');
+      ${line('purple', `Nav type: <span class="timing-val">${timing.type}</span>`)}
+      ${line('yellow', `TTFB: <span class="timing-val">${timing.ttfb.toFixed(1)} ms</span> <span class="timing-muted">— waited for server response</span>`)}
+      ${line('yellow', `DOM ready: <span class="timing-val">${timing.domLoad.toFixed(1)} ms</span> <span class="timing-muted">— waited for parse &amp; render</span>`)}
+      ${line('yellow', `Full load: <span class="timing-val">${timing.fullLoad.toFixed(1)} ms</span> <span class="timing-muted">— waited for all resources</span>`)}
+      ${line('yellow', `Transfer size: <span class="timing-val">${timing.transferSize} bytes</span> <span class="timing-muted">— fetched over the network</span>`)}
+      ${line('yellow', `activationStart: <span class="timing-val">0 ms</span> <span class="timing-muted">— not prerendered</span>`)}
+    `;
   };
 
   if (document.readyState === 'complete') {
@@ -252,6 +325,16 @@ function renderTimingPanel(containerId) {
   } else {
     window.addEventListener('load', render);
   }
+}
+
+/** Helper to render a single timing row */
+function line(dot, text) {
+  return `
+    <div class="timing-line" style="color:#24292f;">
+      <div class="timing-dot ${dot}"></div>
+      <span>${text}</span>
+    </div>
+  `;
 }
 
 // ─── Arrival Banner ───────────────────────────────────────────────────────────
@@ -372,6 +455,12 @@ document.addEventListener('DOMContentLoaded', () => {
   // Log arrival
   const arrival = getArrivalInfo();
   logEvent(`Page loaded — ${arrival.label}`, arrival.type === 'prerender' ? 'color:#0891b2' : 'color:#475569');
+
+  // If on file://, show a warning that speculation rules won't fire
+  if (window.location.protocol === 'file:') {
+    const fileNotice = document.getElementById('file-protocol-notice');
+    if (fileNotice) fileNotice.style.display = 'flex';
+  }
 
   // If browser doesn't support speculation rules, show a notice
   if (!isSpeculationSupported()) {
