@@ -11,10 +11,10 @@
 // ─── Constants ────────────────────────────────────────────────────────────────
 
 const PAGES = [
-  { href: 'page-a.html', label: 'Products',       speculation: 'prerender' },
-  { href: 'page-b.html', label: 'Technology',     speculation: 'prerender' },
-  { href: 'page-c.html', label: 'About',          speculation: 'prefetch'  },
-  { href: 'page-d.html', label: 'No Speculation', speculation: 'none'      },
+  { href: 'page-a.html', label: 'Shop',      speculation: 'prerender' },
+  { href: 'page-b.html', label: 'Features',  speculation: 'prerender' },
+  { href: 'page-c.html', label: 'Our Story', speculation: 'prefetch'  },
+  { href: 'page-d.html', label: 'News',      speculation: 'none'      },
 ];
 
 // page-d.html is deliberately excluded from all speculation rules.

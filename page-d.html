@@ -3,79 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>No Speculation — Speculation Rules Demo</title>
+  <title>News — Aether</title>
   <link rel="stylesheet" href="styles.css" />
-  <style>
-    /* Simulated artificial delay — makes the cold load tangible when served locally */
-    .cold-load-bar {
-      height: 3px;
-      background: var(--border);
-      border-radius: 2px;
-      overflow: hidden;
-      margin-bottom: 24px;
-    }
-    .cold-load-bar-fill {
-      height: 100%;
-      width: 0;
-      background: linear-gradient(90deg, var(--danger), var(--warning));
-      border-radius: 2px;
-      transition: width 0.8s ease;
-    }
-
-    .diff-table td, .diff-table th {
-      padding: 11px 16px;
-      font-size: 0.875rem;
-      border-bottom: 1px solid var(--border);
-      vertical-align: middle;
-    }
-    .diff-table th {
-      font-weight: 600;
-      font-size: 0.75rem;
-      color: var(--text-faint);
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-    }
-    .diff-table tr:last-child td { border-bottom: none; }
-
-    .highlight-row { background: rgba(79,70,229,0.04); }
-
-    .step-arrow {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 10px 0;
-      border-bottom: 1px solid var(--border);
-      font-size: 0.875rem;
-    }
-    .step-arrow:last-child { border-bottom: none; }
-
-    .step-tag {
-      flex-shrink: 0;
-      font-size: 0.7rem;
-      font-weight: 700;
-      padding: 2px 8px;
-      border-radius: 4px;
-      min-width: 68px;
-      text-align: center;
-    }
-    .step-tag.cold   { background: #fee2e2; color: var(--danger); }
-    .step-tag.warm   { background: #dcfce7; color: var(--success); }
-    .step-tag.instant { background: #e0f2fe; color: var(--accent-2); }
-
-    .notice-box {
-      display: flex;
-      align-items: flex-start;
-      gap: 14px;
-      background: #fef9c3;
-      border: 1px solid #fef08a;
-      border-radius: var(--radius);
-      padding: 16px 20px;
-      margin-bottom: 24px;
-      font-size: 0.875rem;
-      color: #92400e;
-    }
-    .notice-box strong { display: block; margin-bottom: 4px; color: #78350f; }
-  </style>
 </head>
 <body>
 
@@ -84,33 +13,33 @@
 ═══════════════════════════════════════════════════════ -->
 <nav class="nav">
   <a href="index.html" class="nav-logo">
-    <div class="logo-icon" style="font-size:0.75rem;font-weight:800;color:white;letter-spacing:-0.03em;">SR</div>
-    SpecDemo
+    <div class="logo-icon" style="font-size:0.75rem;font-weight:800;color:white;letter-spacing:-0.03em;">Æ</div>
+    Aether
   </a>
 
   <ul class="nav-links">
     <li><a href="index.html">Home</a></li>
     <li>
       <a href="page-a.html">
-        Products
+        Shop
         <span class="prefetch-badge"></span>
       </a>
     </li>
     <li>
       <a href="page-b.html">
-        Technology
+        Features
         <span class="prefetch-badge"></span>
       </a>
     </li>
     <li>
       <a href="page-c.html">
-        About
+        Our Story
         <span class="prefetch-badge"></span>
       </a>
     </li>
     <li>
       <a href="page-d.html" class="active" style="color:var(--danger) !important;background:rgba(220,38,38,0.07) !important;">
-        No Speculation
+        News
       </a>
     </li>
   </ul>
@@ -129,230 +58,273 @@
 <!-- ═══════════════════════════════════════════════════════
      MAIN CONTENT
 ═══════════════════════════════════════════════════════ -->
-<main class="page-wrapper fade-in">
+<main class="page-wrapper-wide fade-in">
 
   <!-- Arrival Banner -->
-  <div id="arrival-banner" class="arrival-banner"></div>
+  <div id="arrival-banner" class="arrival-banner" style="max-width:1016px;margin:calc(var(--nav-height) + 12px) auto 0;padding:0 32px;"></div>
 
-  <!-- Breadcrumb -->
-  <div class="breadcrumb">
-    <a href="index.html">Home</a>
-    <span>&rsaquo;</span>
-    <span style="color:var(--text-muted);">No Speculation</span>
-  </div>
-
-  <!-- Notice -->
-  <div class="notice-box">
-    <div>
-      <strong>This page is intentionally excluded from all speculation rules.</strong>
-      No prerender or prefetch was declared for <code>page-d.html</code>.
-      Every time you navigate here, the browser performs a full cold-start fetch — DNS, TCP, request, response, parse, render.
+  <!-- Site Hero -->
+  <div class="site-hero">
+    <img
+      class="site-hero-img"
+      src="https://picsum.photos/seed/aether-news-hero/1440/480"
+      alt="Aether news hero"
+      loading="eager"
+    />
+    <div class="site-hero-overlay" style="background:linear-gradient(105deg,rgba(15,23,42,0.78) 0%,rgba(15,23,42,0.3) 60%,transparent 100%);"></div>
+    <div class="site-hero-content">
+      <span class="site-hero-eyebrow">Aether Journal</span>
+      <h1>Stories, Ideas,<br>and Updates</h1>
+      <p>Behind-the-scenes design decisions, engineering deep dives, and what's coming next from the Aether team.</p>
+      <a href="#news" class="btn-hero">Read the Latest &darr;</a>
     </div>
   </div>
 
-  <!-- Page Hero -->
-  <div class="page-hero">
-    <h1>No Speculation</h1>
-    <p>
-      This is what <strong>standard navigation</strong> looks like. Compare the timing numbers
-      below against the Products or Technology pages (which are pre-rendered) to see
-      the concrete difference.
-    </p>
-  </div>
+  <!-- News Content -->
+  <div class="content-inner" id="news">
 
-  <!-- Timing -->
-  <div class="card">
-    <div class="card-title">Navigation Timing — Standard Cold Load</div>
-    <p style="font-size:0.875rem;color:var(--text-muted);margin-bottom:12px;">
-      Here <code style="color:var(--accent)">transferSize</code> will be greater than 0 (real bytes
-      fetched over the network), <code style="color:var(--accent)">activationStart</code> will be 0,
-      and TTFB will reflect the actual server round-trip time.
-    </p>
-
-    <!-- Visual "cold load" progress bar, animated on page load -->
-    <div class="cold-load-bar">
-      <div class="cold-load-bar-fill" id="cold-bar"></div>
+    <div class="section-header" style="margin-top:48px;">
+      <h2>Latest <span>Stories</span></h2>
     </div>
 
-    <div id="timing-display" class="timing-display">
-      <span class="timing-muted">Loading timing data...</span>
+    <!-- Featured Article -->
+    <div class="article-featured">
+      <img
+        class="article-featured-img"
+        src="https://picsum.photos/seed/article-featured/800/600"
+        alt="How we redesigned the Nova Earbuds"
+      />
+      <div class="article-featured-body">
+        <span class="article-category">Design</span>
+        <h2>Why We Threw Away 18 Months of Work on Nova Earbuds</h2>
+        <p>In early 2024, with our second-generation earbuds nearly ready to ship, Maya made the call to scrap the entire acoustic chamber design. Here's what we learned — and why it was the right decision.</p>
+        <div class="article-meta">
+          <img class="article-meta-avatar" src="https://picsum.photos/seed/team-maya/100/100" alt="Maya Osei" />
+          <span>Maya Osei</span>
+          <span>&middot;</span>
+          <span>March 10, 2025</span>
+          <span>&middot;</span>
+          <span>8 min read</span>
+        </div>
+      </div>
     </div>
-  </div>
 
-  <!-- Side-by-side navigation comparison -->
-  <hr class="divider" />
-  <h2 class="section-title">Step-by-Step <span>Comparison</span></h2>
-  <p style="color:var(--text-muted);font-size:0.875rem;margin-bottom:20px;">
-    The same user action — clicking a link — triggers a very different sequence of events
-    depending on whether speculation rules were active for that destination.
-  </p>
+    <!-- Article Grid -->
+    <div class="article-grid">
 
-  <div class="compare-grid">
-    <!-- Cold / no speculation -->
-    <div class="compare-card" style="border-color:rgba(220,38,38,0.25);background:rgba(220,38,38,0.02);">
-      <div style="font-size:0.75rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--danger);margin-bottom:14px;">Standard Navigation (this page)</div>
-
-      <div class="step-arrow">
-        <span class="step-tag cold">Click</span>
-        <span style="color:var(--text-muted);">User clicks the link</span>
-      </div>
-      <div class="step-arrow">
-        <span class="step-tag cold">DNS</span>
-        <span style="color:var(--text-muted);">Browser resolves the hostname</span>
-      </div>
-      <div class="step-arrow">
-        <span class="step-tag cold">TCP</span>
-        <span style="color:var(--text-muted);">Open a new TCP / TLS connection</span>
-      </div>
-      <div class="step-arrow">
-        <span class="step-tag cold">Req</span>
-        <span style="color:var(--text-muted);">Send HTTP GET request</span>
-      </div>
-      <div class="step-arrow">
-        <span class="step-tag cold">TTFB</span>
-        <span style="color:var(--text-muted);">Wait for first byte from server</span>
-      </div>
-      <div class="step-arrow">
-        <span class="step-tag cold">Parse</span>
-        <span style="color:var(--text-muted);">Browser parses HTML + CSS + JS</span>
-      </div>
-      <div class="step-arrow">
-        <span class="step-tag cold">Paint</span>
-        <span style="color:var(--text-muted);">First paint — page becomes visible</span>
+      <div class="article-card">
+        <img class="article-card-img" src="https://picsum.photos/seed/article-material/600/338" alt="Material science article" />
+        <div class="article-card-body">
+          <span class="article-category">Engineering</span>
+          <h3>The Aluminium Alloy We Almost Used — And Why We Didn't</h3>
+          <p>A behind-the-scenes look at how we choose materials, and the trade-off between corrosion resistance and machinability.</p>
+          <div class="article-meta">
+            <img class="article-meta-avatar" src="https://picsum.photos/seed/team-priya/100/100" alt="Priya Sharma" />
+            <span>Priya Sharma &middot; Feb 28</span>
+          </div>
+        </div>
       </div>
 
-      <p style="margin-top:14px;font-size:0.8rem;color:var(--text-faint);">
-        All steps happen <strong style="color:var(--danger)">after</strong> the click. User waits through every one.
+      <div class="article-card">
+        <img class="article-card-img" src="https://picsum.photos/seed/article-battery/600/338" alt="Battery technology article" />
+        <div class="article-card-body">
+          <span class="article-category">Technology</span>
+          <h3>7-Day Battery Life: The Physics That Make It Possible</h3>
+          <p>Breaking down how the Atlas Watch achieves a week of battery life without sacrificing the always-on display.</p>
+          <div class="article-meta">
+            <img class="article-meta-avatar" src="https://picsum.photos/seed/team-lars/100/100" alt="Lars Henriksen" />
+            <span>Lars Henriksen &middot; Feb 14</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="article-card">
+        <img class="article-card-img" src="https://picsum.photos/seed/article-sustainability/600/338" alt="Sustainability article" />
+        <div class="article-card-body">
+          <span class="article-category">Sustainability</span>
+          <h3>Our Path to Carbon-Neutral Manufacturing by 2026</h3>
+          <p>The steps we've taken, the targets we've set, and the difficult trade-offs we've had to make along the way.</p>
+          <div class="article-meta">
+            <img class="article-meta-avatar" src="https://picsum.photos/seed/team-carlos/100/100" alt="Carlos Mendez" />
+            <span>Carlos Mendez &middot; Jan 30</span>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /article-grid -->
+
+  </div><!-- /content-inner -->
+
+  <!-- ═══════════════════════════════════════════════════════
+       DEMO INSPECTOR
+  ═══════════════════════════════════════════════════════ -->
+  <hr class="demo-inspector-divider" />
+  <section class="demo-inspector">
+    <div class="demo-inspector-inner">
+
+      <div class="demo-inspector-eyebrow">Speculation Rules Demo Inspector</div>
+      <h2>Navigation Timing — News (No Speculation)</h2>
+      <p class="inspector-sub">
+        This page is <strong style="color:var(--danger)">intentionally excluded</strong> from all
+        speculation rules. No prerender or prefetch was declared for <code>page-d.html</code>.
+        Every navigation here is a full cold-start fetch — compare the timing below with the other pages.
       </p>
-    </div>
 
-    <!-- Prerender -->
-    <div class="compare-card highlight">
-      <div style="font-size:0.75rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--accent);margin-bottom:14px;">Prerender (Products / Technology)</div>
-
-      <div class="step-arrow" style="background:rgba(79,70,229,0.04);border-radius:6px;padding:8px 10px;margin-bottom:4px;border:none;">
-        <span class="step-tag instant">Before</span>
-        <span style="color:var(--text-muted);">Browser fetches HTML + parses + renders silently</span>
-      </div>
-      <div class="step-arrow" style="background:rgba(79,70,229,0.04);border-radius:6px;padding:8px 10px;margin-bottom:4px;border:none;">
-        <span class="step-tag instant">Before</span>
-        <span style="color:var(--text-muted);">Full composited frame held in memory</span>
+      <!-- No-speculation notice -->
+      <div class="notice-box" style="display:flex;align-items:flex-start;gap:14px;background:#fef9c3;border-color:#fef08a;color:#92400e;">
+        <div>
+          <strong style="display:block;margin-bottom:4px;color:#78350f;">Cold load — no speculation active for this page</strong>
+          Every visit performs DNS resolution, TCP handshake, HTTP request, HTML fetch, parse, and render
+          from scratch. This is the baseline experience your users get without the Speculation Rules API.
+        </div>
       </div>
 
-      <div style="border-top:2px dashed var(--border);margin:12px 0;"></div>
-
-      <div class="step-arrow">
-        <span class="step-tag warm">Click</span>
-        <span style="color:var(--text-muted);">User clicks the link</span>
-      </div>
-      <div class="step-arrow">
-        <span class="step-tag warm">Swap</span>
-        <span style="color:var(--text-muted);">Browser activates the pre-rendered frame</span>
-      </div>
-      <div class="step-arrow">
-        <span class="step-tag warm">Paint</span>
-        <span style="color:var(--text-muted);">Page is already visible — no wait</span>
+      <div id="file-protocol-notice" style="display:none;" class="notice-box">
+        <strong>Running on file://</strong> — Speculation Rules are silently ignored on the
+        <code>file://</code> protocol. Serve the demo over HTTP:<br />
+        <code style="user-select:all;">npx serve .</code> &nbsp;or&nbsp;
+        <code style="user-select:all;">python -m http.server 8080</code>
       </div>
 
-      <p style="margin-top:14px;font-size:0.8rem;color:var(--text-faint);">
-        All heavy work happened <strong style="color:var(--success)">before</strong> the click. The user sees the page instantly.
+      <!-- Timing panel with cold-load progress bar -->
+      <div class="card">
+        <div class="card-title">Navigation Timing — Standard Cold Load</div>
+        <p style="font-size:0.875rem;color:var(--text-muted);margin-bottom:12px;">
+          <code style="color:var(--accent)">transferSize</code> will be non-zero (real bytes fetched),
+          <code style="color:var(--accent)">activationStart</code> is 0, and TTFB reflects the actual
+          server round-trip. Compare with Shop and Features pages (prerendered).
+        </p>
+
+        <!-- Cold-load animated bar -->
+        <div class="cold-load-wrap">
+          <div class="cold-load-label">
+            <span>Cold load progress</span>
+            <span style="color:var(--danger);font-weight:700;">Standard navigation</span>
+          </div>
+          <div class="cold-bar-track">
+            <div id="cold-bar"></div>
+          </div>
+        </div>
+
+        <div id="timing-display" class="timing-display">
+          <span class="timing-muted">Loading timing data...</span>
+        </div>
+      </div>
+
+      <!-- Step-by-step comparison -->
+      <hr class="divider" />
+      <h3 class="section-title">Step-by-Step <span>Comparison</span></h3>
+      <p style="color:var(--text-muted);font-size:0.875rem;margin-bottom:20px;">
+        The same user action — clicking a link — triggers a very different sequence of events
+        depending on whether speculation rules were active for that destination.
       </p>
+
+      <div class="compare-grid">
+        <div class="compare-card" style="border-color:rgba(220,38,38,0.25);background:rgba(220,38,38,0.02);">
+          <h3 style="color:var(--danger);margin-bottom:14px;">Standard Navigation (this page)</h3>
+          <ul class="step-list">
+            <li><span class="step-num" style="background:#fee2e2;color:var(--danger);border-color:#fca5a5;">1</span>You click the link</li>
+            <li><span class="step-num" style="background:#fee2e2;color:var(--danger);border-color:#fca5a5;">2</span>Browser resolves DNS</li>
+            <li><span class="step-num" style="background:#fee2e2;color:var(--danger);border-color:#fca5a5;">3</span>Opens TCP / TLS connection</li>
+            <li><span class="step-num" style="background:#fee2e2;color:var(--danger);border-color:#fca5a5;">4</span>Sends HTTP GET request</li>
+            <li><span class="step-num" style="background:#fee2e2;color:var(--danger);border-color:#fca5a5;">5</span>Waits for first byte (TTFB)</li>
+            <li><span class="step-num" style="background:#fee2e2;color:var(--danger);border-color:#fca5a5;">6</span>Parses HTML + CSS + JS</li>
+            <li><span class="step-num" style="background:#fee2e2;color:var(--danger);border-color:#fca5a5;">7</span>First paint — page visible</li>
+          </ul>
+          <p style="margin-top:14px;font-size:0.8rem;color:var(--text-faint);">
+            All steps happen <strong style="color:var(--danger)">after</strong> the click.
+          </p>
+        </div>
+
+        <div class="compare-card highlight">
+          <h3 style="color:var(--accent-2);margin-bottom:14px;">With Prerender (Shop / Features)</h3>
+          <div style="background:rgba(79,70,229,0.04);border-radius:6px;padding:10px;margin-bottom:10px;">
+            <div style="font-size:0.72rem;font-weight:700;color:var(--accent);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:8px;">Before you click</div>
+            <ul class="step-list">
+              <li><span class="step-num">1</span>Browser fetches HTML silently</li>
+              <li><span class="step-num">2</span>Full parse + CSS + JS executed</li>
+              <li><span class="step-num">3</span>Composited frame held in memory</li>
+            </ul>
+          </div>
+          <ul class="step-list">
+            <li><span class="step-num">4</span>You click the link</li>
+            <li><span class="step-num">5</span>Browser activates the pre-rendered page</li>
+            <li><span class="step-num">6</span>Page visible <strong style="color:var(--success)">instantly</strong></li>
+          </ul>
+          <p style="margin-top:14px;font-size:0.8rem;color:var(--text-faint);">
+            Heavy work happened <strong style="color:var(--success)">before</strong> the click.
+          </p>
+        </div>
+      </div>
+
+      <!-- Metrics comparison table -->
+      <hr class="divider" />
+      <h3 class="section-title">Metrics <span>Comparison</span></h3>
+
+      <div class="card" style="padding:0;overflow:hidden;margin-bottom:0;">
+        <table class="compare-table">
+          <thead>
+            <tr>
+              <th>Metric</th>
+              <th style="color:var(--danger);">No Speculation (this page)</th>
+              <th style="color:var(--success);">Prefetch</th>
+              <th style="color:var(--accent-2);">Prerender</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Network request on click</td>
+              <td class="cell-bad">Yes — full fetch</td>
+              <td class="cell-mid">HTML cached</td>
+              <td class="cell-good">None at all</td>
+            </tr>
+            <tr>
+              <td>transferSize</td>
+              <td class="cell-bad">Full HTML bytes</td>
+              <td class="cell-good">0 bytes</td>
+              <td class="cell-good">0 bytes</td>
+            </tr>
+            <tr>
+              <td>TTFB</td>
+              <td class="cell-bad">Real server latency</td>
+              <td class="cell-mid">Still real</td>
+              <td class="cell-good">Near zero</td>
+            </tr>
+            <tr>
+              <td>deliveryType signal</td>
+              <td>— (empty)</td>
+              <td class="cell-good">"navigational-prefetch"</td>
+              <td>— (empty)</td>
+            </tr>
+            <tr>
+              <td>activationStart</td>
+              <td class="cell-bad">0</td>
+              <td class="cell-bad">0</td>
+              <td class="cell-good">&gt; 0</td>
+            </tr>
+            <tr>
+              <td>JS executed before click</td>
+              <td class="cell-bad">No</td>
+              <td class="cell-bad">No</td>
+              <td class="cell-good">Yes</td>
+            </tr>
+            <tr>
+              <td>Perceived load time</td>
+              <td class="cell-bad">300–2000ms+</td>
+              <td class="cell-mid">100–500ms</td>
+              <td class="cell-good">&lt; 5ms (instant)</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
     </div>
-  </div>
-
-  <!-- Metrics comparison table -->
-  <hr class="divider" />
-  <h2 class="section-title">Metrics <span>Comparison</span></h2>
-
-  <div class="card" style="padding:0;overflow:hidden;">
-    <table class="diff-table" style="width:100%;border-collapse:collapse;">
-      <thead style="background:var(--surface-2);">
-        <tr>
-          <th style="padding:12px 16px;text-align:left;">Metric</th>
-          <th style="padding:12px 16px;text-align:left;color:var(--danger);">No Speculation (this page)</th>
-          <th style="padding:12px 16px;text-align:left;color:var(--success);">Prefetch</th>
-          <th style="padding:12px 16px;text-align:left;color:var(--accent-2);">Prerender</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td style="color:var(--text-muted);font-weight:500;">Network request on click</td>
-          <td style="color:var(--danger);font-weight:600;">Yes — full fetch</td>
-          <td style="color:var(--warning);">Skipped (HTML cached)</td>
-          <td style="color:var(--success);font-weight:600;">None at all</td>
-        </tr>
-        <tr class="highlight-row">
-          <td style="color:var(--text-muted);font-weight:500;">transferSize</td>
-          <td style="color:var(--danger);">Full HTML bytes</td>
-          <td style="color:var(--success);">0 bytes</td>
-          <td style="color:var(--success);">0 bytes</td>
-        </tr>
-        <tr>
-          <td style="color:var(--text-muted);font-weight:500;">TTFB</td>
-          <td style="color:var(--danger);">Real (server latency)</td>
-          <td style="color:var(--warning);">Real (still parses)</td>
-          <td style="color:var(--success);font-weight:600;">Near zero</td>
-        </tr>
-        <tr class="highlight-row">
-          <td style="color:var(--text-muted);font-weight:500;">JS executed before click</td>
-          <td style="color:var(--danger);">No</td>
-          <td style="color:var(--danger);">No</td>
-          <td style="color:var(--success);font-weight:600;">Yes</td>
-        </tr>
-        <tr>
-          <td style="color:var(--text-muted);font-weight:500;">activationStart</td>
-          <td style="color:var(--danger);">0</td>
-          <td style="color:var(--danger);">0</td>
-          <td style="color:var(--success);font-weight:600;">&gt; 0</td>
-        </tr>
-        <tr class="highlight-row">
-          <td style="color:var(--text-muted);font-weight:500;">Perceived load time</td>
-          <td style="color:var(--danger);">300–2000ms+</td>
-          <td style="color:var(--warning);">100–500ms</td>
-          <td style="color:var(--success);font-weight:600;">&lt; 5ms (instant)</td>
-        </tr>
-        <tr>
-          <td style="color:var(--text-muted);font-weight:500;">Resource cost before click</td>
-          <td>None</td>
-          <td style="color:var(--warning);">Low (HTML only)</td>
-          <td style="color:var(--danger);">Higher (full render)</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-
-  <!-- How to verify in DevTools -->
-  <div class="card" style="background:linear-gradient(135deg,var(--surface),rgba(79,70,229,0.03));border-color:rgba(79,70,229,0.15);">
-    <div class="card-title">How to verify in DevTools</div>
-    <p style="font-size:0.875rem;color:var(--text-muted);margin-bottom:14px;">
-      Open DevTools and confirm the difference yourself:
-    </p>
-    <div style="display:flex;flex-direction:column;gap:12px;font-size:0.875rem;">
-      <div style="display:flex;gap:12px;align-items:flex-start;">
-        <span class="status-badge badge-red" style="flex-shrink:0;margin-top:2px;">This page</span>
-        <span style="color:var(--text-muted);">Network tab shows a real document request with non-zero transfer size and a visible waterfall chart</span>
-      </div>
-      <div style="display:flex;gap:12px;align-items:flex-start;">
-        <span class="status-badge badge-blue" style="flex-shrink:0;margin-top:2px;">Prerendered</span>
-        <span style="color:var(--text-muted);">Network tab shows no document request on click; Performance tab shows <code>activationStart</code> is set</span>
-      </div>
-      <div style="display:flex;gap:12px;align-items:flex-start;">
-        <span class="status-badge badge-green" style="flex-shrink:0;margin-top:2px;">Prefetched</span>
-        <span style="color:var(--text-muted);">Network tab shows the early HTML fetch in the background; document entry on click has <code>transferSize: 0</code></span>
-      </div>
-    </div>
-  </div>
-
-  <!-- Navigation -->
-  <div class="btn-row">
-    <a href="index.html" class="btn btn-outline">&larr; Back to Home</a>
-    <a href="page-a.html" class="btn btn-primary">Compare with Prerendered &rarr;</a>
-  </div>
+  </section>
 
 </main>
 
 <footer class="footer">
-  Speculation Rules API Demo &middot;
+  Aether &copy; 2025 &middot; Speculation Rules API Demo &middot;
   <a href="https://developer.chrome.com/docs/web-platform/prerender-pages" target="_blank" rel="noopener">Chrome Docs</a>
 </footer>
 
@@ -362,7 +334,6 @@
   window.addEventListener('load', () => {
     const bar = document.getElementById('cold-bar');
     if (bar) {
-      // Short delay so the animation is visible, then fill to 100%
       requestAnimationFrame(() => {
         setTimeout(() => { bar.style.width = '100%'; }, 80);
       });

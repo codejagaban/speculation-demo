@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Products — Speculation Rules Demo</title>
+  <title>Shop — Aether</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
@@ -13,33 +13,33 @@
 ═══════════════════════════════════════════════════════ -->
 <nav class="nav">
   <a href="index.html" class="nav-logo">
-    <div class="logo-icon" style="font-size:0.75rem;font-weight:800;color:white;letter-spacing:-0.03em;">SR</div>
-    SpecDemo
+    <div class="logo-icon" style="font-size:0.75rem;font-weight:800;color:white;letter-spacing:-0.03em;">Æ</div>
+    Aether
   </a>
 
   <ul class="nav-links">
     <li><a href="index.html">Home</a></li>
     <li>
       <a href="page-a.html" class="active">
-        Products
+        Shop
         <span class="prefetch-badge"></span>
       </a>
     </li>
     <li>
       <a href="page-b.html">
-        Technology
+        Features
         <span class="prefetch-badge"></span>
       </a>
     </li>
     <li>
       <a href="page-c.html">
-        About
+        Our Story
         <span class="prefetch-badge"></span>
       </a>
     </li>
     <li>
       <a href="page-d.html" style="color:var(--danger);">
-        No Speculation
+        News
       </a>
     </li>
   </ul>
@@ -58,130 +58,228 @@
 <!-- ═══════════════════════════════════════════════════════
      MAIN CONTENT
 ═══════════════════════════════════════════════════════ -->
-<main class="page-wrapper fade-in">
+<main class="page-wrapper-wide fade-in">
 
   <!-- Arrival Banner -->
-  <div id="arrival-banner" class="arrival-banner"></div>
+  <div id="arrival-banner" class="arrival-banner" style="max-width:1016px;margin:calc(var(--nav-height) + 12px) auto 0;padding:0 32px;" ></div>
 
-  <!-- Breadcrumb -->
-  <div class="breadcrumb">
-    <a href="index.html">Home</a>
-    <span>&rsaquo;</span>
-    <span style="color:var(--text-muted);">Products</span>
-  </div>
-
-  <!-- Page Hero -->
-  <div class="page-hero">
-    <h1>Products</h1>
-    <p>
-      This page was declared as a <strong style="color:var(--accent-2)">prerender</strong> target.
-      If speculation rules were active, the browser rendered this page in a hidden context
-      before you clicked the link.
-    </p>
-  </div>
-
-  <!-- Navigation Timing Panel -->
-  <div class="card">
-    <div class="card-title">Navigation Timing — How did you arrive here?</div>
-    <p style="font-size:0.875rem;color:var(--text-muted);margin-bottom:12px;">
-      The data below comes from <code style="color:var(--accent)">PerformanceNavigationTiming</code>.
-      If this page was pre-rendered, you'll see <strong>activationStart &gt; 0</strong> and a
-      <strong>near-zero TTFB</strong> — no network was needed.
-    </p>
-    <div id="timing-display" class="timing-display">
-      <span class="timing-muted">Loading timing data...</span>
+  <!-- Site Hero -->
+  <div class="site-hero">
+    <img
+      class="site-hero-img"
+      src="https://picsum.photos/seed/aether-hero-shop/1440/480"
+      alt="Aether lifestyle hero"
+      loading="eager"
+    />
+    <div class="site-hero-overlay"></div>
+    <div class="site-hero-content">
+      <span class="site-hero-eyebrow">New Arrivals — Spring 2025</span>
+      <h1>Crafted for the<br>Modern Life</h1>
+      <p>Premium accessories that blend precision engineering with timeless design. Built to last, made to inspire.</p>
+      <a href="#products" class="btn-hero">Shop the Collection &darr;</a>
     </div>
   </div>
 
-  <!-- What Prerender Means -->
-  <div class="compare-grid">
-    <div class="compare-card">
-      <h3>Without Prerender</h3>
-      <p style="margin-bottom:12px;">
-        When you click the link, the browser starts from scratch:
-        resolves DNS, opens a TCP connection, sends the request, waits
-        for the server, parses HTML, loads CSS &amp; JS, and finally paints.
+  <!-- Stats Strip -->
+  <div class="stats-strip">
+    <div class="stat-item">
+      <div class="stat-number">50k+</div>
+      <div class="stat-label">Happy customers</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-number">4.9</div>
+      <div class="stat-label">Average rating</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-number">Free</div>
+      <div class="stat-label">Shipping over $75</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-number">30d</div>
+      <div class="stat-label">Returns, no questions</div>
+    </div>
+  </div>
+
+  <!-- Products Section -->
+  <div class="content-inner" id="products">
+
+    <div class="section-header">
+      <h2>Featured <span>Products</span></h2>
+      <a href="#">View all &rarr;</a>
+    </div>
+
+    <div class="product-grid">
+
+      <div class="product-card">
+        <img class="product-card-img" src="https://picsum.photos/seed/nova-earbuds/600/450" alt="Nova Earbuds Pro" />
+        <div class="product-card-body">
+          <span class="product-tag">Best Seller</span>
+          <div class="product-name">Nova Earbuds Pro</div>
+          <div class="product-desc">Active noise cancellation, 32-hr battery, IPX5 water resistance.</div>
+          <div class="product-footer">
+            <div class="product-price">$149</div>
+            <button class="btn-add">Add to Cart</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="product-card">
+        <img class="product-card-img" src="https://picsum.photos/seed/atlas-watch/600/450" alt="Atlas Smart Watch" />
+        <div class="product-card-body">
+          <span class="product-tag">New</span>
+          <div class="product-name">Atlas Smart Watch</div>
+          <div class="product-desc">Always-on AMOLED display, health tracking, 7-day battery life.</div>
+          <div class="product-footer">
+            <div class="product-price">$299</div>
+            <button class="btn-add">Add to Cart</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="product-card">
+        <img class="product-card-img" src="https://picsum.photos/seed/echo-speaker/600/450" alt="Echo Portable Speaker" />
+        <div class="product-card-body">
+          <span class="product-tag">Sale</span>
+          <div class="product-name">Echo Portable Speaker</div>
+          <div class="product-desc">360° surround sound, 20-hr playtime, fully waterproof.</div>
+          <div class="product-footer">
+            <div class="product-price">
+              <span class="price-old">$119</span>$89
+            </div>
+            <button class="btn-add">Add to Cart</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="product-card">
+        <img class="product-card-img" src="https://picsum.photos/seed/arc-stand/600/450" alt="Arc Laptop Stand" />
+        <div class="product-card-body">
+          <span class="product-tag">Ergonomic</span>
+          <div class="product-name">Arc Laptop Stand</div>
+          <div class="product-desc">Aircraft-grade aluminium, 6-angle adjustable, folds flat.</div>
+          <div class="product-footer">
+            <div class="product-price">$79</div>
+            <button class="btn-add">Add to Cart</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="product-card">
+        <img class="product-card-img" src="https://picsum.photos/seed/glow-lamp/600/450" alt="Glow Desk Lamp" />
+        <div class="product-card-body">
+          <span class="product-tag">Popular</span>
+          <div class="product-name">Glow Desk Lamp</div>
+          <div class="product-desc">Adaptive colour temperature, wireless charging base, touch dimmer.</div>
+          <div class="product-footer">
+            <div class="product-price">$119</div>
+            <button class="btn-add">Add to Cart</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="product-card">
+        <img class="product-card-img" src="https://picsum.photos/seed/swift-keyboard/600/450" alt="Swift Mechanical Keyboard" />
+        <div class="product-card-body">
+          <span class="product-tag">Limited</span>
+          <div class="product-name">Swift Mech. Keyboard</div>
+          <div class="product-desc">Hot-swap switches, per-key RGB, aluminium case, PBT keycaps.</div>
+          <div class="product-footer">
+            <div class="product-price">$199</div>
+            <button class="btn-add">Add to Cart</button>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /product-grid -->
+
+    <!-- CTA Banner -->
+    <div class="cta-banner">
+      <img class="cta-banner-img" src="https://picsum.photos/seed/aether-cta-a/1200/400" alt="" />
+      <div class="cta-banner-overlay"></div>
+      <div class="cta-banner-content">
+        <h2>Unlock 15% Off Your First Order</h2>
+        <p>Join the Aether community for early access to new releases, exclusive offers, and free expedited shipping.</p>
+        <a href="#" class="btn-cta">Join Aether &rarr;</a>
+      </div>
+    </div>
+
+  </div><!-- /content-inner -->
+
+  <!-- ═══════════════════════════════════════════════════════
+       DEMO INSPECTOR
+  ═══════════════════════════════════════════════════════ -->
+  <hr class="demo-inspector-divider" />
+  <section class="demo-inspector">
+    <div class="demo-inspector-inner">
+
+      <div class="demo-inspector-eyebrow">Speculation Rules Demo Inspector</div>
+      <h2>Navigation Timing — Shop (Prerendered)</h2>
+      <p class="inspector-sub">
+        This page is declared as a <strong style="color:var(--accent-2)">prerender</strong> target.
+        The browser fully rendered it in the background before you clicked.
+        Your perceived wait should be near zero.
       </p>
-      <p style="font-size:0.8rem;color:var(--text-faint);">
-        Typical load: <span style="color:var(--warning)">300–2000ms</span>
-      </p>
-    </div>
-    <div class="compare-card highlight">
-      <h3>With Prerender</h3>
-      <p style="margin-bottom:12px;">
-        All of that work was already done while you were on the previous page.
-        Clicking the link just swaps the hidden pre-rendered page into view —
-        no waiting at all.
-      </p>
-      <p style="font-size:0.8rem;color:var(--text-faint);">
-        Typical activation: <span style="color:var(--success)">&lt; 5ms</span>
-      </p>
-    </div>
-  </div>
 
-  <!-- What the browser did -->
-  <div class="card">
-    <div class="card-title">What the browser does during prerender</div>
-    <div style="display:flex;flex-direction:column;gap:12px;">
-      <div style="display:flex;gap:12px;align-items:flex-start;font-size:0.875rem;">
-        <span style="color:var(--success);font-weight:700;flex-shrink:0;">Yes</span>
-        <span style="color:var(--text-muted);">Fetches the full HTML document</span>
+      <div id="file-protocol-notice" style="display:none;" class="notice-box">
+        <strong>Running on file://</strong> — Speculation Rules are silently ignored on the
+        <code>file://</code> protocol. Serve the demo over HTTP to see real prerender/prefetch timing:<br />
+        <code style="user-select:all;">npx serve .</code> &nbsp;or&nbsp;
+        <code style="user-select:all;">python -m http.server 8080</code>
       </div>
-      <div style="display:flex;gap:12px;align-items:flex-start;font-size:0.875rem;">
-        <span style="color:var(--success);font-weight:700;flex-shrink:0;">Yes</span>
-        <span style="color:var(--text-muted);">Parses the DOM tree</span>
-      </div>
-      <div style="display:flex;gap:12px;align-items:flex-start;font-size:0.875rem;">
-        <span style="color:var(--success);font-weight:700;flex-shrink:0;">Yes</span>
-        <span style="color:var(--text-muted);">Loads and applies CSS stylesheets</span>
-      </div>
-      <div style="display:flex;gap:12px;align-items:flex-start;font-size:0.875rem;">
-        <span style="color:var(--success);font-weight:700;flex-shrink:0;">Yes</span>
-        <span style="color:var(--text-muted);">Executes JavaScript (with some restrictions)</span>
-      </div>
-      <div style="display:flex;gap:12px;align-items:flex-start;font-size:0.875rem;">
-        <span style="color:var(--success);font-weight:700;flex-shrink:0;">Yes</span>
-        <span style="color:var(--text-muted);">Renders the composited visual layer</span>
-      </div>
-      <div style="display:flex;gap:12px;align-items:flex-start;font-size:0.875rem;">
-        <span style="color:var(--warning);font-weight:700;flex-shrink:0;">Wait</span>
-        <span style="color:var(--text-muted);">Does NOT display it — waits for activation (the click)</span>
-      </div>
-    </div>
-  </div>
 
-  <!-- Sample Products Grid (cosmetic) -->
-  <hr class="divider" />
-  <h2 class="section-title">Sample <span>Products</span></h2>
-  <p style="color:var(--text-muted);font-size:0.875rem;margin-bottom:20px;">
-    Placeholder content — the real demo value is the timing panel above.
-  </p>
+      <div class="card" style="margin-bottom:0;">
+        <div class="card-title">Navigation Timing — How did you arrive here?</div>
+        <p style="font-size:0.875rem;color:var(--text-muted);margin-bottom:12px;">
+          With <strong>prerender</strong>, <code style="color:var(--accent)">activationStart &gt; 0</code>
+          and the page activates from a fully-rendered background tab —
+          perceived load is <strong style="color:var(--success)">~0ms</strong>.
+        </p>
+        <div id="timing-display" class="timing-display">
+          <span class="timing-muted">Loading timing data...</span>
+        </div>
+      </div>
 
-  <div class="feature-grid">
-    <div class="feature-item">
-      <h4>Quantum Display</h4>
-      <p>4K HDR panel with 240Hz refresh and near-zero response time.</p>
-    </div>
-    <div class="feature-item">
-      <h4>AuraSound Pro</h4>
-      <p>Spatial audio headset with adaptive noise cancellation.</p>
-    </div>
-    <div class="feature-item">
-      <h4>SwiftKeys X</h4>
-      <p>Mechanical keyboard with ultra-low latency wireless protocol.</p>
-    </div>
-  </div>
+      <hr class="divider" />
+      <h3 class="section-title">Prerender — <span>What happened before you clicked</span></h3>
 
-  <!-- Navigation -->
-  <div class="btn-row">
-    <a href="index.html" class="btn btn-outline">&larr; Back to Home</a>
-    <a href="page-b.html" class="btn btn-primary">Technology Page &rarr;</a>
-  </div>
+      <div class="compare-grid">
+        <div class="compare-card">
+          <h3 style="color:var(--danger);">Without Prerender</h3>
+          <ul class="step-list">
+            <li><span class="step-num">1</span>You click the link</li>
+            <li><span class="step-num">2</span>Browser sends a network request</li>
+            <li><span class="step-num">3</span>Server responds (TTFB)</li>
+            <li><span class="step-num">4</span>HTML parsed, CSS &amp; JS loaded</li>
+            <li><span class="step-num">5</span>Render tree built, layout calculated</li>
+            <li><span class="step-num">6</span>Page painted to screen</li>
+          </ul>
+          <p style="font-size:0.8rem;color:var(--text-faint);margin-top:12px;">
+            User waits: <span style="color:var(--danger)">full network + render time</span>
+          </p>
+        </div>
+        <div class="compare-card highlight">
+          <h3 style="color:var(--accent-2);">With Prerender (this page)</h3>
+          <ul class="step-list">
+            <li><span class="step-num">1</span>Speculation rule parsed &rarr; browser fetches HTML</li>
+            <li><span class="step-num">2</span>Full parse + CSS + JS runs in hidden tab</li>
+            <li><span class="step-num">3</span>Composited frame held in memory</li>
+            <li><span class="step-num">4</span>You click the link</li>
+            <li><span class="step-num">5</span>Browser <em>activates</em> the pre-rendered page</li>
+            <li><span class="step-num">6</span>Page visible <strong style="color:var(--success)">instantly</strong></li>
+          </ul>
+          <p style="font-size:0.8rem;color:var(--text-faint);margin-top:12px;">
+            User waits: <span style="color:var(--success)">~0ms (activation only)</span>
+          </p>
+        </div>
+      </div>
+
+    </div>
+  </section>
 
 </main>
 
 <footer class="footer">
-  Speculation Rules API Demo &middot;
+  Aether &copy; 2025 &middot; Speculation Rules API Demo &middot;
   <a href="https://developer.chrome.com/docs/web-platform/prerender-pages" target="_blank" rel="noopener">Chrome Docs</a>
 </footer>
 

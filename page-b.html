@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Technology — Speculation Rules Demo</title>
+  <title>Features — Aether</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
@@ -13,33 +13,33 @@
 ═══════════════════════════════════════════════════════ -->
 <nav class="nav">
   <a href="index.html" class="nav-logo">
-    <div class="logo-icon" style="font-size:0.75rem;font-weight:800;color:white;letter-spacing:-0.03em;">SR</div>
-    SpecDemo
+    <div class="logo-icon" style="font-size:0.75rem;font-weight:800;color:white;letter-spacing:-0.03em;">Æ</div>
+    Aether
   </a>
 
   <ul class="nav-links">
     <li><a href="index.html">Home</a></li>
     <li>
       <a href="page-a.html">
-        Products
+        Shop
         <span class="prefetch-badge"></span>
       </a>
     </li>
     <li>
       <a href="page-b.html" class="active">
-        Technology
+        Features
         <span class="prefetch-badge"></span>
       </a>
     </li>
     <li>
       <a href="page-c.html">
-        About
+        Our Story
         <span class="prefetch-badge"></span>
       </a>
     </li>
     <li>
       <a href="page-d.html" style="color:var(--danger);">
-        No Speculation
+        News
       </a>
     </li>
   </ul>
@@ -58,52 +58,172 @@
 <!-- ═══════════════════════════════════════════════════════
      MAIN CONTENT
 ═══════════════════════════════════════════════════════ -->
-<main class="page-wrapper fade-in">
+<main class="page-wrapper-wide fade-in">
 
   <!-- Arrival Banner -->
-  <div id="arrival-banner" class="arrival-banner"></div>
+  <div id="arrival-banner" class="arrival-banner" style="max-width:1016px;margin:calc(var(--nav-height) + 12px) auto 0;padding:0 32px;"></div>
 
-  <!-- Breadcrumb -->
-  <div class="breadcrumb">
-    <a href="index.html">Home</a>
-    <span>&rsaquo;</span>
-    <span style="color:var(--text-muted);">Technology</span>
-  </div>
-
-  <!-- Page Hero -->
-  <div class="page-hero">
-    <h1>Technology</h1>
-    <p>
-      Also declared as a <strong style="color:var(--accent-2)">prerender</strong> target.
-      The browser should have run this page's full render pipeline in the background.
-    </p>
-  </div>
-
-  <!-- Navigation Timing Panel -->
-  <div class="card">
-    <div class="card-title">Navigation Timing — How did you arrive here?</div>
-    <p style="font-size:0.875rem;color:var(--text-muted);margin-bottom:12px;">
-      Compare these numbers between the three pages to see the difference between
-      prerender, prefetch, and standard navigation.
-    </p>
-    <div id="timing-display" class="timing-display">
-      <span class="timing-muted">Loading timing data...</span>
+  <!-- Site Hero -->
+  <div class="site-hero">
+    <img
+      class="site-hero-img"
+      src="https://picsum.photos/seed/aether-features-hero/1440/480"
+      alt="Aether features hero"
+      loading="eager"
+    />
+    <div class="site-hero-overlay"></div>
+    <div class="site-hero-content">
+      <span class="site-hero-eyebrow">Engineering Excellence</span>
+      <h1>Every Detail<br>Considered</h1>
+      <p>We obsess over what others overlook. From haptic feedback to thermal management — precision runs through everything we make.</p>
+      <a href="#features" class="btn-hero">Explore Features &darr;</a>
     </div>
   </div>
 
-  <!-- Deep Dive: How Prerender Works Under the Hood -->
-  <hr class="divider" />
-  <h2 class="section-title">Under the <span>Hood</span></h2>
-
-  <div class="code-block">
-    <div class="code-header">
-      <div class="code-dots"><span></span><span></span><span></span></div>
-      <span class="code-lang">JavaScript — Detecting prerender activation</span>
+  <!-- Stats Strip -->
+  <div class="stats-strip">
+    <div class="stat-item">
+      <div class="stat-number">200+</div>
+      <div class="stat-label">Engineering hours per product</div>
     </div>
-    <pre><span class="token-comment">// Is the page currently being pre-rendered (not yet active)?</span>
+    <div class="stat-item">
+      <div class="stat-number">12</div>
+      <div class="stat-label">Patents filed in 2024</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-number">3yr</div>
+      <div class="stat-label">Industry-leading warranty</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-number">100%</div>
+      <div class="stat-label">Recycled packaging</div>
+    </div>
+  </div>
+
+  <!-- Feature Sections -->
+  <div id="features">
+
+    <!-- Feature 1 — Sound -->
+    <div class="feature-section content-inner">
+      <div class="feature-split">
+        <div class="feature-img-wrap">
+          <img src="https://picsum.photos/seed/aether-sound/800/500" alt="Adaptive sound technology" />
+        </div>
+        <div class="feature-text-wrap">
+          <span class="feature-eyebrow">Acoustic Engineering</span>
+          <h2>Sound that Adapts to You</h2>
+          <p>Our custom-tuned drivers pair with AI-powered adaptive EQ to learn your hearing preferences in real time. Whether you're on a commute, at the gym, or deep in focus — Aether delivers the perfect sonic environment.</p>
+          <ul class="feature-list">
+            <li>Hybrid active noise cancellation with 4 ambient mics</li>
+            <li>Adaptive EQ profiles that update every 30 seconds</li>
+            <li>Bone conduction mode for open-ear awareness</li>
+            <li>24-bit audio via USB-C lossless connection</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Feature 2 — Display -->
+    <div class="feature-section content-inner">
+      <div class="feature-split reverse">
+        <div class="feature-img-wrap">
+          <img src="https://picsum.photos/seed/aether-display/800/500" alt="Always-on display technology" />
+        </div>
+        <div class="feature-text-wrap">
+          <span class="feature-eyebrow">Display Technology</span>
+          <h2>Always-On AMOLED — Zero Compromise</h2>
+          <p>Forget choosing between battery life and visibility. Aether's micro-AMOLED panels deliver 2000 nits peak brightness outdoors while sipping just 8mW in always-on mode — keeping your glanceable info alive all day.</p>
+          <ul class="feature-list">
+            <li>2000 nits peak brightness, visible in full sunlight</li>
+            <li>Always-on mode at under 8mW power draw</li>
+            <li>1ms response time for buttery-smooth animations</li>
+            <li>Sapphire crystal glass — scratch and shatter resistant</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Feature 3 — Build Quality -->
+    <div class="feature-section content-inner">
+      <div class="feature-split">
+        <div class="feature-img-wrap">
+          <img src="https://picsum.photos/seed/aether-build/800/500" alt="Premium materials and build quality" />
+        </div>
+        <div class="feature-text-wrap">
+          <span class="feature-eyebrow">Materials & Build</span>
+          <h2>Built to Outlast Everything Else</h2>
+          <p>We use the same aerospace-grade alloys found in jet turbine housings. Machined from a single billet of aluminium, each chassis is then hand-finished and anodized to resist corrosion, scratches, and the relentless grind of daily life.</p>
+          <ul class="feature-list">
+            <li>6061-T6 aerospace aluminium unibody chassis</li>
+            <li>Military-grade MIL-STD-810H drop certification</li>
+            <li>IP68 dust and water resistance to 2 metres</li>
+            <li>Carbon-neutral manufacturing process</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /features -->
+
+  <!-- CTA Banner -->
+  <div class="content-inner">
+    <div class="cta-banner">
+      <img class="cta-banner-img" src="https://picsum.photos/seed/aether-cta-b/1200/400" alt="" />
+      <div class="cta-banner-overlay"></div>
+      <div class="cta-banner-content">
+        <h2>Experience the Difference</h2>
+        <p>Free 30-day trial on all products. If it's not the best you've ever used, send it back — no questions asked.</p>
+        <a href="page-a.html" class="btn-cta">Shop Now &rarr;</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════
+       DEMO INSPECTOR
+  ═══════════════════════════════════════════════════════ -->
+  <hr class="demo-inspector-divider" />
+  <section class="demo-inspector">
+    <div class="demo-inspector-inner">
+
+      <div class="demo-inspector-eyebrow">Speculation Rules Demo Inspector</div>
+      <h2>Navigation Timing — Features (Prerendered)</h2>
+      <p class="inspector-sub">
+        Also declared as a <strong style="color:var(--accent-2)">prerender</strong> target.
+        The browser ran this page's full render pipeline in the background before you clicked.
+        Compare the timing here with the prefetched "Our Story" page and the cold "News" page.
+      </p>
+
+      <div id="file-protocol-notice" style="display:none;" class="notice-box">
+        <strong>Running on file://</strong> — Speculation Rules are silently ignored on the
+        <code>file://</code> protocol. Serve the demo over HTTP:<br />
+        <code style="user-select:all;">npx serve .</code> &nbsp;or&nbsp;
+        <code style="user-select:all;">python -m http.server 8080</code>
+      </div>
+
+      <div class="card" style="margin-bottom:0;">
+        <div class="card-title">Navigation Timing — How did you arrive here?</div>
+        <p style="font-size:0.875rem;color:var(--text-muted);margin-bottom:12px;">
+          Compare these numbers across the three pages to see the difference between
+          prerender, prefetch, and standard navigation.
+        </p>
+        <div id="timing-display" class="timing-display">
+          <span class="timing-muted">Loading timing data...</span>
+        </div>
+      </div>
+
+      <!-- Detecting prerender in JS -->
+      <hr class="divider" />
+      <h3 class="section-title">Under the <span>Hood</span></h3>
+
+      <div class="code-block">
+        <div class="code-header">
+          <div class="code-dots"><span></span><span></span><span></span></div>
+          <span class="code-lang">JavaScript — Detecting prerender activation</span>
+        </div>
+        <pre><span class="token-comment">// Is the page currently being pre-rendered (not yet active)?</span>
 <span class="token-kw">if</span> (document.prerendering) {
   document.addEventListener(<span class="token-str">'prerenderingchange'</span>, () => {
-    <span class="token-comment">// Page was activated (user clicked the link)</span>
+    <span class="token-comment">// Page was activated — user clicked the link</span>
     console.log(<span class="token-str">'Page activated from prerender!'</span>);
   });
 }
@@ -111,83 +231,54 @@
 <span class="token-comment">// After activation, check PerformanceNavigationTiming</span>
 <span class="token-kw">const</span> nav = performance.getEntriesByType(<span class="token-str">'navigation'</span>)[<span class="token-val">0</span>];
 
-<span class="token-comment">// activationStart > 0 means this page was pre-rendered</span>
-<span class="token-kw">const</span> wasPrerendered = nav.activationStart > <span class="token-val">0</span>;
+<span class="token-comment">// activationStart > 0 means this page was pre-rendered (MDN canonical)</span>
+<span class="token-kw">const</span> wasPrerendered = document.prerendering || nav.activationStart > <span class="token-val">0</span>;
 
-<span class="token-comment">// transferSize of 0 means no bytes came over the network</span>
-<span class="token-comment">// (the page was already fully loaded before activation)</span>
-<span class="token-kw">const</span> fromCache = nav.transferSize === <span class="token-val">0</span>;
+<span class="token-comment">// transferSize of 0 alone is unreliable (also fires for HTTP-cached pages)</span>
+<span class="token-comment">// Use deliveryType for prefetch detection instead</span>
+<span class="token-kw">const</span> wasPrefetched = nav.deliveryType === <span class="token-str">'navigational-prefetch'</span>;
 
-console.log({ wasPrerendered, activationStart: nav.activationStart });</pre>
-  </div>
+console.log({ wasPrerendered, wasPrefetched, activationStart: nav.activationStart });</pre>
+      </div>
 
-  <!-- Restrictions -->
-  <div class="card">
-    <div class="card-title">Prerender Restrictions</div>
-    <p style="font-size:0.875rem;color:var(--text-muted);margin-bottom:16px;">
-      The browser enforces restrictions on pre-rendered pages to avoid side effects
-      before the user has actually navigated:
-    </p>
-    <div style="display:flex;flex-direction:column;gap:12px;">
-      <div style="display:flex;gap:12px;align-items:flex-start;font-size:0.875rem;">
-        <span style="color:var(--danger);font-weight:700;flex-shrink:0;">Blocked</span>
-        <span style="color:var(--text-muted);"><strong style="color:var(--text)">Permissions API</strong> — permission prompts are deferred until activation</span>
+      <!-- Prerender restrictions -->
+      <div class="card" style="margin-bottom:0;">
+        <div class="card-title">Prerender Restrictions</div>
+        <p style="font-size:0.875rem;color:var(--text-muted);margin-bottom:16px;">
+          The browser enforces restrictions on pre-rendered pages to avoid side effects
+          before the user has actually navigated:
+        </p>
+        <div style="display:flex;flex-direction:column;gap:12px;">
+          <div style="display:flex;gap:12px;align-items:flex-start;font-size:0.875rem;">
+            <span style="color:var(--danger);font-weight:700;flex-shrink:0;">Blocked</span>
+            <span style="color:var(--text-muted);"><strong style="color:var(--text)">Permissions API</strong> — permission prompts are deferred until activation</span>
+          </div>
+          <div style="display:flex;gap:12px;align-items:flex-start;font-size:0.875rem;">
+            <span style="color:var(--danger);font-weight:700;flex-shrink:0;">Blocked</span>
+            <span style="color:var(--text-muted);"><strong style="color:var(--text)">Media autoplay</strong> — audio/video won't play in a prerender context</span>
+          </div>
+          <div style="display:flex;gap:12px;align-items:flex-start;font-size:0.875rem;">
+            <span style="color:var(--danger);font-weight:700;flex-shrink:0;">Blocked</span>
+            <span style="color:var(--text-muted);"><strong style="color:var(--text)">IndexedDB</strong> — opening connections is blocked until activation</span>
+          </div>
+          <div style="display:flex;gap:12px;align-items:flex-start;font-size:0.875rem;">
+            <span style="color:var(--warning);font-weight:700;flex-shrink:0;">Note</span>
+            <span style="color:var(--text-muted);"><strong style="color:var(--text)">document.prerendering</strong> — always check this flag to delay side-effectful code</span>
+          </div>
+          <div style="display:flex;gap:12px;align-items:flex-start;font-size:0.875rem;">
+            <span style="color:var(--success);font-weight:700;flex-shrink:0;">Allowed</span>
+            <span style="color:var(--text-muted);"><strong style="color:var(--text)">Script execution</strong> — JS runs normally, but with safe defaults</span>
+          </div>
+        </div>
       </div>
-      <div style="display:flex;gap:12px;align-items:flex-start;font-size:0.875rem;">
-        <span style="color:var(--danger);font-weight:700;flex-shrink:0;">Blocked</span>
-        <span style="color:var(--text-muted);"><strong style="color:var(--text)">Media autoplay</strong> — audio/video won't play in a prerender context</span>
-      </div>
-      <div style="display:flex;gap:12px;align-items:flex-start;font-size:0.875rem;">
-        <span style="color:var(--danger);font-weight:700;flex-shrink:0;">Blocked</span>
-        <span style="color:var(--text-muted);"><strong style="color:var(--text)">IndexedDB</strong> — opening connections is blocked until activation</span>
-      </div>
-      <div style="display:flex;gap:12px;align-items:flex-start;font-size:0.875rem;">
-        <span style="color:var(--warning);font-weight:700;flex-shrink:0;">Note</span>
-        <span style="color:var(--text-muted);"><strong style="color:var(--text)">document.prerendering</strong> — always check this flag to delay side-effectful code</span>
-      </div>
-      <div style="display:flex;gap:12px;align-items:flex-start;font-size:0.875rem;">
-        <span style="color:var(--success);font-weight:700;flex-shrink:0;">Allowed</span>
-        <span style="color:var(--text-muted);"><strong style="color:var(--text)">Script execution</strong> — JS runs normally, but with safe defaults</span>
-      </div>
+
     </div>
-  </div>
-
-  <!-- Browser support -->
-  <div class="card">
-    <div class="card-title">Browser Support (as of 2025)</div>
-    <div style="display:flex;flex-direction:column;gap:10px;font-size:0.875rem;">
-      <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--border);">
-        <span style="color:var(--text-muted);">Chrome / Edge</span>
-        <span class="status-badge badge-green">109+</span>
-      </div>
-      <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--border);">
-        <span style="color:var(--text-muted);">Samsung Internet</span>
-        <span class="status-badge badge-green">21+</span>
-      </div>
-      <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--border);">
-        <span style="color:var(--text-muted);">Firefox</span>
-        <span class="status-badge badge-yellow">Partial (prefetch only)</span>
-      </div>
-      <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;">
-        <span style="color:var(--text-muted);">Safari</span>
-        <span class="status-badge badge-red">Not yet</span>
-      </div>
-    </div>
-    <p style="margin-top:14px;font-size:0.8rem;color:var(--text-faint);">
-      Always check with <code style="color:var(--accent)">HTMLScriptElement.supports('speculationrules')</code> before relying on it.
-    </p>
-  </div>
-
-  <!-- Navigation -->
-  <div class="btn-row">
-    <a href="page-a.html" class="btn btn-outline">&larr; Products</a>
-    <a href="page-c.html" class="btn btn-primary">About Page &rarr;</a>
-  </div>
+  </section>
 
 </main>
 
 <footer class="footer">
-  Speculation Rules API Demo &middot;
+  Aether &copy; 2025 &middot; Speculation Rules API Demo &middot;
   <a href="https://developer.chrome.com/docs/web-platform/prerender-pages" target="_blank" rel="noopener">Chrome Docs</a>
 </footer>
 
